@@ -13,6 +13,10 @@ handlers:
 - url: /js
   static_dir: web/js
 
+- url: /api/api_test
+  script: api.py
+  login: admin
+
 - url: /api/.*
   script: api.py
 

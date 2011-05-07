@@ -16,7 +16,7 @@ from config import SECRET_MASK_KEY
 
 class MainPage(webapp.RequestHandler):
     def get(self, image_key):
-        if image_key == '':
+        if image_key == '' or len(image_key) != 6:
             return self.error(404)
         
         archive_list_query = ArchiveList().all()
