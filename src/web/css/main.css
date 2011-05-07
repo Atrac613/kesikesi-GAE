@@ -19,9 +19,9 @@ body {
 #header {
 	margin: 10px;
 	paffing-left: 10px;
-	width: 200px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
+	width: 250px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 	background-color: #CCCCCC;
 	text-align: center;
 	opacity: 0.6;
@@ -29,8 +29,10 @@ body {
 }
 
 #header h1 {
-	font-size: 1.6em;
-	line-height: 2em;
+	padding-bottom: 5px;
+	font-size: 2.5em;
+	font-family: 'Sunshiney', serif;
+	letter-spacing: 0.13em;
 }
 
 #photo {
@@ -47,8 +49,16 @@ body {
 	margin-bottom: 10px;
 }
 
+#qr_code img {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
 #read_count {
 	text-align: center;
+	font-family: 'Sunshiney', serif;
+	font-size: 1.5em;
+	letter-spacing: 0.13em;
 }
 
 #report {
@@ -57,4 +67,7 @@ body {
 
 #footer {
 	text-align: center;
+	font-family: 'Sunshiney', serif;
+	font-size: 1.5em;
+	letter-spacing: 0.13em;
 }
