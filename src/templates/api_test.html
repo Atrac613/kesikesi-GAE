@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>API Test - KesiKesi</title>
+</head>
+<body>
+
+<h1>API Test</h1>
+
+<form action="/api/upload" enctype="multipart/form-data" method="post">
+  <div><label>UserId:</label></div>
+  <div><input type="input" name="user_id" /></div>
+  <div><label>ORG Image:</label></div>
+  <div><input type="file" name="original_image"></div>
+  <div><label>MSK Image:</label></div>
+  <div><input type="file" name="mask_image"></div>
+  <div>
+  <select name="mask_mode">
+    <option value="">None</option>
+  	<option value="scratch">Scrach</option>
+	<option value="accelerometer1">Accelerometer1</option>
+	<option value="accelerometer2">Accelerometer2</option>
+	<option value="sound_level">Sound Level</option>
+  </select>
+  </div>
+  <div><input type="submit" value="Save"></div>
+</form>
+
+</body>
+</html>

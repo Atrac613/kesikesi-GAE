@@ -1,0 +1,25 @@
+application: kesikesi-me
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /css
+  static_dir: web/css
+
+- url: /images
+  static_dir: web/images
+
+- url: /js
+  static_dir: web/js
+
+- url: /api/.*
+  script: api.py
+
+- url: /
+  script: main.py
+  
+- url: /.*
+  script: image.py
+
+  

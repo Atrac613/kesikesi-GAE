@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=320">
+<link href="/css/reset.css" rel="stylesheet" type="text/css" />
+<link href="/css/main.css" rel="stylesheet" type="text/css" />
+<title>kesikesi.me</title>
+</head>
+<body>
+
+<div id="wrapper">
+	<div id="body">
+		<div id="header"><h1>kesikesi.me</h1></div>
+		<div id="photo"><img src="/api/get_image?id={{ image_key }}" width="400" /></div>
+		<div id="qr_code">
+			<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
+		</div>
+		<div id="read_count"><p>{{ read_count }} kesikesi</p></div>
+		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">この投稿を違反報告する</a></p></div>
+		<div id="footer"><p>(c) Relax Jigyou-bu.</p></div>
+	</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+body {
+	background-image: url(/images/stripe.png);
+	margin: 0 auto;
+}
+
+#wrapper {
+	margin: 0 auto;
+	width: 480px;
+}
+
+#body {
+	margin: 20px;
+	padding: 10px;
+	background-color: rgba(0,51,102,0.4);
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+#header {
+	margin: 10px;
+	paffing-left: 10px;
+	width: 200px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	background-color: #CCCCCC;
+	text-align: center;
+	opacity: 0.6;
+	
+}
+
+#header h1 {
+	font-size: 1.6em;
+	line-height: 2em;
+}
+
+#photo {
+	margin: 10px;
+}
+
+#photo img {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#qr_code {
+	margin-left: 110px;
+	margin-bottom: 10px;
+}
+
+#read_count {
+	text-align: center;
+}
+
+#report {
+	text-align: center;
+}
+
+#footer {
+	text-align: center;
+}
