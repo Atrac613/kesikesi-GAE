@@ -37,6 +37,7 @@ class UploadAPI(webapp.RequestHandler):
         msk_image = self.request.get('mask_image')
         user_id = self.request.get('user_id')
         mask_mode = self.request.get('mask_mode')
+        access_code = self.request.get('access_code')
         
         logging.info('original_image: %d' % len(org_image))
         logging.info('mask_image: %d' % len(msk_image))
@@ -45,7 +46,7 @@ class UploadAPI(webapp.RequestHandler):
         if len(mask_mode) == 0:
             mask_mode = 'scratch'
         
-        mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level']
+        mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level', 'barcode']
         
         if org_image and msk_image and user_id and mask_mode in mask_mode_list:
             image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()[0:6]
@@ -67,6 +68,7 @@ class UploadAPI(webapp.RequestHandler):
             mask_image.image = db.Blob(msk_image)
             mask_image.access_key = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_key)).hexdigest()
             mask_image.read_count = 0
+            mask_image.access_code = access_code
             mask_image.put()
             
             data = {'image_key': image_key}
@@ -167,7 +169,7 @@ class GetMaskModeAPI(webapp.RequestHandler):
         else:
             mask_mode = mask_image.mask_mode
         
-        data = {'mask_mode': mask_mode}
+        data = {'mask_mode': mask_mode, 'access_code': mask_image.access_code}
         
         json = simplejson.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'

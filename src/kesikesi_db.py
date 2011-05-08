@@ -25,5 +25,6 @@ class MaskImage(db.Model):
     access_key = db.StringProperty()
     archive_list_key = db.ReferenceProperty(ArchiveList)
     read_count = db.IntegerProperty()
+    access_code = db.StringProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now_add=True)
