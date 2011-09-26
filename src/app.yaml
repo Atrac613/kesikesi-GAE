@@ -19,6 +19,10 @@ handlers:
 
 - url: /api/.*
   script: api.py
+  
+- url: /page/archive
+  secure: always
+  script: archive.py
 
 - url: /
   script: main.py

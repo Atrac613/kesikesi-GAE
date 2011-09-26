@@ -6,6 +6,11 @@
 
 from google.appengine.ext import db
 
+class UserList(db.Model):
+    google_account = db.UserProperty()
+    user_id = db.StringProperty()
+    created_at = db.DateTimeProperty(auto_now_add=True)
+    
 class ArchiveList(db.Model):
     user_id = db.StringProperty()
     image_key = db.StringProperty()

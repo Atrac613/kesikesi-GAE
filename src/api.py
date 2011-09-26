@@ -20,6 +20,8 @@ from kesikesi_db import MaskImage
 from config import SECRET_IMAGE_KEY
 from config import SECRET_MASK_KEY
 
+from common import convert_square
+
 class APITestPage(webapp.RequestHandler):
     def get(self):
 
@@ -182,7 +184,15 @@ class GetImageAPI(webapp.RequestHandler):
         if image_key == '':
             return self.error(404)
         
-        thumbnail = memcache.get('cached_image_%s' % image_key)
+        style = self.request.get('style')
+        if style in ('icon48', 'icon120'):
+            cache_key = 'cached_image_%s_%s' % (image_key, style)
+        else:
+            style = None
+            cache_key = 'cached_image_%s' % image_key
+            
+        thumbnail = memcache.get(cache_key)
+            
         if thumbnail is None:
             archive_list_query = ArchiveList().all()
             archive_list_query.filter('image_key =', image_key)
@@ -215,7 +225,13 @@ class GetImageAPI(webapp.RequestHandler):
             img.im_feeling_lucky()
             thumbnail = img.execute_transforms(output_encoding=images.PNG)
             
-            memcache.add('cached_image_%s' % image_key, thumbnail, 3600)
+            if style is not None:
+                if style == 'icon48':
+                    thumbnail = convert_square(thumbnail, 48, 48)
+                elif style == 'icon120':
+                    thumbnail = convert_square(thumbnail, 120, 120)
+            
+            memcache.add(cache_key, thumbnail, 3600)
             
             logging.info('Image from DB. image_key: %s' % image_key)
         else:
