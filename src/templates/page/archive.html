@@ -4,18 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=320, user-scalable=no /">
 
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script language="Javascript" type="text/javascript">
+	google.load("jquery", "1");
+	google.load("jqueryui", "1");
+</script>
+
 <style>
+	body {
+		background-image: url(https://twimg0-a.akamaihd.net/profile_background_images/26365115/stripe_8775e6a92916944f4bfa76a79d845088.png);
+	}
 </style>
+
+<script language="Javascript" type="text/javascript">
+	var page_id = 0;
+	$(function() {
+		$("#readMore").click(function(){
+			$.post('/page/api/archive_read_more', {id:"{{ user_id }}", page_id:page_id}, function(data){
+				for (i in data['data']) {
+					img = '<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 2px;">';
+					img += '<img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" />';
+					img += '</div>';
+					console.log(data['data'][i]['image_key']);
+					$("#archiveList").append(img);
+				}
+				page_id = data['page_id'];
+				if (page_id === false) {
+					$("#readMore").hide();
+				}
+				console.log('page_id:' + page_id);
+			}, "json");
+		});
+		
+{% if readMoreHide %}
+		$("#readMore").hide();
+{% endif %}
+		
+	});
+	
+</script>
 
 <title>Archive - KesiKesi</title>
 </head>
 <body>
+	
+<div style="position:relative;background-color: rgba(46,173,201,0.7);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+	<span>My Archive</span>
+</div>
 
+<div id="archiveList">
 {% for archive in archive_list %}
-<div>
-	<img src="/api/get_image?id={{ archive.image_key }}&style=icon120" />
+<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 2px;">
+	<img src="/api/get_image?id={{ archive.image_key }}&style=icon48" />
 </div>
 {% endfor %}
+</div>
+
+<div style="clear: both;">
+	<div id="readMore" style="margin:0 auto;width:100px;background-color: rgba(46,173,201,0.7);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+		<span>More</span>
+	</div>
+</div>
 
 </body>
 </html>

@@ -24,6 +24,10 @@ handlers:
   secure: always
   script: archive.py
 
+- url: /page/api/archive_read_more
+  secure: always
+  script: archive.py
+
 - url: /
   script: main.py
   
