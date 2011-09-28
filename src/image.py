@@ -46,7 +46,12 @@ class MainPage(webapp.RequestHandler):
             'read_count': read_count
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/image.html')
+        user_agent = self.request.headers.get('user_agent')
+        if 'Mobile' in user_agent and 'Safari' in user_agent:
+            path = os.path.join(os.path.dirname(__file__), 'templates/image_ios.html')
+        else:
+            path = os.path.join(os.path.dirname(__file__), 'templates/image.html')
+        
         self.response.out.write(template.render(path, template_values))
 
 

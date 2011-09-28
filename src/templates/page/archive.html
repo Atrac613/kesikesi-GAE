@@ -24,7 +24,7 @@
 			$.post('/page/api/archive_read_more', {id:"{{ user_id }}", page_id:page_id}, function(data){
 				for (i in data['data']) {
 					img = '<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 2px;">';
-					img += '<img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" />';
+					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" /></a>';
 					img += '</div>';
 					console.log(data['data'][i]['image_key']);
 					$("#archiveList").append(img);
@@ -56,7 +56,7 @@
 <div id="archiveList">
 {% for archive in archive_list %}
 <div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 2px;">
-	<img src="/api/get_image?id={{ archive.image_key }}&style=icon48" />
+	<a href="/{{ archive.image_key }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" /></a>
 </div>
 {% endfor %}
 </div>
