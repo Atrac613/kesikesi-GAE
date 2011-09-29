@@ -20,30 +20,39 @@ from kesikesi_db import MaskImage
 from config import SECRET_IMAGE_KEY
 from config import SECRET_MASK_KEY
 
+from common import get_related_ids
+
 class ArchivePage(webapp.RequestHandler):
     def get(self):
         user_id = self.request.get('id')
         more = self.request.get('more')
         
+        related_user_id_list  = get_related_ids(user_id)
+        logging.info('Related id: %s' % related_user_id_list)
+        
         archive_list_query = ArchiveList().all()
-        archive_list_query.filter('user_id =', user_id)
+        
+        # workaround
+        archive_list_query.filter('user_id IN', related_user_id_list)
         archive_list_query.order('-created_at')
         
         archive_list = archive_list_query.fetch(2)
         
-        cursor = archive_list_query.cursor()
-        memcache.add('cursor_archive_%s_0' % user_id, cursor, 3600)
+        #cursor = archive_list_query.cursor()
+        #memcache.add('cursor_archive_%s_0' % user_id, cursor, 3600)
         
         data = []
         for image in archive_list:
             data.append({'image_key': image.image_key, 'created_at': image.created_at.strftime('%Y-%m-%dT%H:%M:%S+0000')})
         
-        archive_list_query.with_cursor(cursor)
-        archive_list = archive_list_query.fetch(2)
-        if len(archive_list) <= 0:
-            read_more_hide = True
-        else:
-            read_more_hide = False;
+        # workaround
+        #archive_list_query.with_cursor(cursor)
+        #archive_list = archive_list_query.fetch(2)
+        #if len(archive_list) <= 0:
+        #    read_more_hide = True
+        #else:
+        #   read_more_hide = False;
+        read_more_hide = True;
         
         template_values = {
             'archive_list': data,

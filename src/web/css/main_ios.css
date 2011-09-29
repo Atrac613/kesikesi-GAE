@@ -1,0 +1,95 @@
+body {
+	background-image: url(/images/stripe.png);
+	margin: 0 auto;
+}
+
+#wrapper {
+	margin: 0 auto;
+	width: 320px;
+}
+
+#body {
+	margin: 20px;
+	padding: 10px;
+	background-color: rgba(0,51,102,0.4);
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#header {
+	margin: 10px;
+	padding-left: 10px;
+	width: 150px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #CCCCCC;
+	text-align: center;
+	opacity: 0.6;
+	
+}
+
+#header h1 {
+	padding-bottom: 5px;
+	font-size: 1.5em;
+	font-family: 'Sunshiney', serif;
+	letter-spacing: 0.13em;
+}
+
+#photo {
+	margin: 10px;
+	width: 240px;
+	height: 312px;
+	background-color: #CCCCCC;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#photo img {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#launchApp {
+	margin:0 auto;
+	width:150px;
+	height:30px;
+	line-height:30px;
+	background-color: rgba(46,173,201,0.7);
+	text-align: center;
+	padding: 5px;
+	color: #FFFFFF;
+	margin-top:5px;
+	margin-bottom:5px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#qr_code {
+	margin-left: 65px;
+	margin-bottom: 10px;
+}
+
+#qr_code img {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#read_count {
+	text-align: center;
+	font-family: 'Sunshiney', serif;
+	font-size: 1em;
+	letter-spacing: 0.13em;
+}
+
+#report {
+	text-align: center;
+	font-size: 1em;
+	margin: 10px auto;
+}
+
+#footer {
+	text-align: center;
+	font-family: 'Sunshiney', serif;
+	font-size: 1em;
+	letter-spacing: 0.13em;
+}

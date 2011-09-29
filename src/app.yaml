@@ -27,6 +27,15 @@ handlers:
 - url: /page/api/archive_read_more
   secure: always
   script: archive.py
+  
+- url: /page/settings
+  secure: always
+  script: settings.py
+  
+- url: /page/settings/google
+  secure: always
+  login: required
+  script: settings.py
 
 - url: /
   script: main.py

@@ -2,9 +2,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=320">
+<meta name="viewport" content="width=320px, initial-scale=1.0">
+<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ archive.image_key }}&style=icon48"/>
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
-<link href="/css/main.css?2011050701" rel="stylesheet" type="text/css" />
+<link href="/css/main_ios.css?2011050701" rel="stylesheet" type="text/css" />
 <link href="http://fonts.googleapis.com/css?family=Sunshiney:regular" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -17,7 +18,8 @@
 <script language="Javascript" type="text/javascript">
 $(function() {
 	$("#launchApp").click(function(){
-		document.location = "kesikesi://www.rplt.jp/view/test";
+		document.location = "ksks://www.kesikesi.me/{{ image_key }}";
+		{% if safari %}
 	    var time = (new Date()).getTime();
 	    setTimeout(function(){
 	        var now = (new Date()).getTime();
@@ -28,6 +30,7 @@ $(function() {
 	            }
 	         }
 	    }, 300);
+	    {% endif %}
     });
 });
 </script>
@@ -39,15 +42,36 @@ $(function() {
 <div id="wrapper">
 	<div id="body">
 		<div id="header"><h1>kesikesi.me</h1></div>
-		<div id="photo"><img src="/api/get_image?id={{ image_key }}" width="400" /></div>
-		<div id="launchApp" style="margin:0 auto;width:100px;background-color: rgba(46,173,201,0.7);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+		<div id="photo"><img src="/api/get_image?id={{ image_key }}&style=size240" width="240" /></div>
+		<div id="launchApp">
 			<span>Launch app</span>
 		</div>
+		<div style="padding-top:10px;padding-bottom:10px;">
+			<div style="margin: 30px auto;text-align:center;">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="kesikesi_me">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+			</div>
+			<div style="margin: 30px auto;text-align:center;">
+				<div id="fb-root"></div>
+				<script>(function(d, s, id) {
+				  var js, fjs = d.getElementsByTagName(s)[0];
+				  if (d.getElementById(id)) {return;}
+				  js = d.createElement(s); js.id = id;
+				  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+				  fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));</script>
+				
+				<div class="fb-like" data-send="false" data-width="200" data-show-faces="true"></div>
+			</div>
+			<div style="margin: 30px auto;text-align:center;">
+				<a href="http://mixi.jp/share.pl" class="mixi-check-button">mixiチェック</a>
+    			<script type="text/javascript" src="http://static.mixi.jp/js/share.js"></script>
+			</div>
+		</div>
 		<div id="qr_code">
-			<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
+			<p><img src="http://chart.apis.google.com/chart?chs=130x130&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
 		</div>
 		<div id="read_count"><p>{{ read_count }} kesikesi</p></div>
-		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">この投稿を通報する</a></p></div>
+		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">Report this page.</a></p></div>
 		<div id="footer"><p>(c) Relax Jigyou-bu.</p></div>
 	</div>
 </div>

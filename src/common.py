@@ -2,6 +2,8 @@
 
 from google.appengine.api import images
 
+from kesikesi_db import UserList
+
 def convert_square(image_src, width, height):
     image = images.Image(image_src)
             
@@ -21,3 +23,18 @@ def convert_square(image_src, width, height):
     image.crop(x/thumb_width, y/thumb_height, 1.0-(x/thumb_width), 1.0-(y/thumb_height))
             
     return image.execute_transforms(output_encoding=images.PNG)
+
+def get_related_ids(user_id):
+    user_list = UserList.all().filter('user_id', user_id).get()
+    
+    user_id_list = []
+    
+    if user_list is not None:
+        related_user_list = UserList.all().filter('google_account =', user_list.google_account).fetch(10)
+        
+        for row in related_user_list:
+            user_id_list.append(row.user_id)
+            
+    return user_id_list
+            
+        

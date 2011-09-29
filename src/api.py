@@ -185,12 +185,13 @@ class GetImageAPI(webapp.RequestHandler):
             return self.error(404)
         
         style = self.request.get('style')
-        if style in ('icon48', 'icon120'):
+        if style in ('icon48', 'icon120', 'size240'):
             cache_key = 'cached_image_%s_%s' % (image_key, style)
         else:
             style = None
             cache_key = 'cached_image_%s' % image_key
             
+        logging.info('memcache_key: %s' % cache_key)
         thumbnail = memcache.get(cache_key)
             
         if thumbnail is None:
@@ -221,7 +222,13 @@ class GetImageAPI(webapp.RequestHandler):
             image_c = images.composite(all_images, 320, 416, 0, images.PNG, 100)
             
             img = images.Image(image_c)
-            img.resize(width=320)
+            
+            width = 320
+            if style is not None:
+                if style == 'size240':
+                    width = 240
+                    
+            img.resize(width=width)
             img.im_feeling_lucky()
             thumbnail = img.execute_transforms(output_encoding=images.PNG)
             

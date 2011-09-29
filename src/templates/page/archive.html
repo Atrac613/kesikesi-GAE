@@ -23,7 +23,7 @@
 		$("#readMore").click(function(){
 			$.post('/page/api/archive_read_more', {id:"{{ user_id }}", page_id:page_id}, function(data){
 				for (i in data['data']) {
-					img = '<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 2px;">';
+					img = '<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;">';
 					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" /></a>';
 					img += '</div>';
 					console.log(data['data'][i]['image_key']);
@@ -53,19 +53,23 @@
 	<span>My Archive</span>
 </div>
 
-<div id="archiveList">
+<div id="archiveList" style="margin-left: 3px;">
 {% for archive in archive_list %}
-<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 2px;">
+<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;">
 	<a href="/{{ archive.image_key }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" /></a>
 </div>
 {% endfor %}
 </div>
 
-<div style="clear: both;">
+<div style="clear: both;padding-top: 10px;">
 	<div id="readMore" style="margin:0 auto;width:100px;background-color: rgba(46,173,201,0.7);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
 		<span>More</span>
 	</div>
 </div>
+
+<hr />
+
+<center><p><a href="/page/archive?id={{ user_id }}">Home</a> | <a href="/page/settings?id={{ user_id }}">Settings</a></p></center>
 
 </body>
 </html>
