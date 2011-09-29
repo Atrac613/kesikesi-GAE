@@ -27,8 +27,11 @@ class ArchivePage(webapp.RequestHandler):
         user_id = self.request.get('id')
         more = self.request.get('more')
         
-        related_user_id_list  = get_related_ids(user_id)
+        related_user_id_list = get_related_ids(user_id)
         logging.info('Related id: %s' % related_user_id_list)
+        
+        if len(related_user_id_list) <= 0:
+            related_user_id_list.append(user_id)
         
         archive_list_query = ArchiveList().all()
         
