@@ -36,7 +36,7 @@ class ArchivePage(webapp.RequestHandler):
         archive_list_query.filter('user_id IN', related_user_id_list)
         archive_list_query.order('-created_at')
         
-        archive_list = archive_list_query.fetch(2)
+        archive_list = archive_list_query.fetch(50)
         
         #cursor = archive_list_query.cursor()
         #memcache.add('cursor_archive_%s_0' % user_id, cursor, 3600)
