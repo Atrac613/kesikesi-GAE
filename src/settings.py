@@ -55,11 +55,15 @@ class GooglePage(webapp.RequestHandler):
                 user_list.put()
                 
                 connected = True
+                
+                memcache.delete('user_id_list_%s' % user_id)
             
         elif mode == 'disconnect':
             user_list.delete()
             
             connected = False
+            
+            memcache.delete('user_id_list_%s' % user_id)
         
         template_values = {
             'account': account,

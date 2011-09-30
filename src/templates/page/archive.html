@@ -12,16 +12,20 @@
 </script>
 
 <style>
+	* {
+		-webkit-touch-callout:none;
+	}
+	
 	body {
 		background-image: url(https://twimg0-a.akamaihd.net/profile_background_images/26365115/stripe_8775e6a92916944f4bfa76a79d845088.png);
 	}
 </style>
 
 <script language="Javascript" type="text/javascript">
-	var page_id = 0;
+	var date = '{{ date }}';
 	$(function() {
 		$("#readMore").click(function(){
-			$.post('/page/api/archive_read_more', {id:"{{ user_id }}", page_id:page_id}, function(data){
+			$.post('/page/api/archive_read_more', {id:"{{ user_id }}", date: date}, function(data){
 				for (i in data['data']) {
 					img = '<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;">';
 					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" /></a>';
@@ -29,11 +33,11 @@
 					console.log(data['data'][i]['image_key']);
 					$("#archiveList").append(img);
 				}
-				page_id = data['page_id'];
-				if (page_id === false) {
+				date = data['date'];
+				if (date === false) {
 					$("#readMore").hide();
 				}
-				console.log('page_id:' + page_id);
+				console.log('date:' + date);
 			}, "json");
 		});
 		
