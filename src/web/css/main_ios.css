@@ -64,8 +64,23 @@ body {
 	border-radius: 10px;
 }
 
+.mediumButton {
+	margin:0 auto;
+	width:150px;
+	height:30px;
+	line-height:30px;
+	background-color: rgba(46,173,201,0.7);
+	text-align: center;
+	padding: 5px;
+	color: #FFFFFF;
+	margin-top:5px;
+	margin-bottom:5px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
 #qr_code {
-	margin-left: 65px;
+	margin-left: 45px;
 	margin-bottom: 10px;
 }
 

@@ -8,11 +8,12 @@ from google.appengine.ext import db
 
 class UserList(db.Model):
     google_account = db.UserProperty()
-    user_id = db.StringProperty()
+    device_id = db.StringProperty()
+    status = db.StringProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
     
 class ArchiveList(db.Model):
-    user_id = db.StringProperty()
+    account = db.ReferenceProperty(UserList)
     image_key = db.StringProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now_add=True)

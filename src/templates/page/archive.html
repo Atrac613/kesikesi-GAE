@@ -4,6 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=320, user-scalable=no /">
 
+<link href='http://fonts.googleapis.com/css?family=Terminal+Dosis' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+	* {
+		-webkit-touch-callout:none;
+	}
+	
+	body {
+		background-image: url(https://twimg0-a.akamaihd.net/profile_background_images/26365115/stripe_8775e6a92916944f4bfa76a79d845088.png);
+		font-family: 'Terminal Dosis', sans-serif;
+	}
+	
+	span {
+		font-weight: bold;
+	}
+</style>
+
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script language="Javascript" type="text/javascript">
@@ -11,69 +28,78 @@
 	google.load("jqueryui", "1");
 </script>
 
-<style>
-	* {
-		-webkit-touch-callout:none;
-	}
-	
-	body {
-		background-image: url(https://twimg0-a.akamaihd.net/profile_background_images/26365115/stripe_8775e6a92916944f4bfa76a79d845088.png);
-	}
-</style>
-
 <script language="Javascript" type="text/javascript">
 	var date = '{{ date }}';
+	var loading = false;
 	$(function() {
-		$("#readMore").click(function(){
-			$.post('/page/api/archive_read_more', {id:"{{ user_id }}", date: date}, function(data){
+		$("#loadMore").click(function(){
+			if (loading) {
+				return;
+			}
+			loading = true;
+			$("#loadMore span").text("Loading");
+			$.post('/page/api/archive_read_more', {date: date}, function(data){
 				for (i in data['data']) {
-					img = '<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;">';
-					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" /></a>';
+					img = '<div style="background-color: #CCCCCC;border-radius: 5px;width: 48px; height:48px;float: left;margin: 6px;">';
+					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" style="border-radius: 5px;" /></a>';
 					img += '</div>';
 					console.log(data['data'][i]['image_key']);
 					$("#archiveList").append(img);
 				}
 				date = data['date'];
 				if (date === false) {
-					$("#readMore").hide();
+					$("#loadMore").hide();
 				}
 				console.log('date:' + date);
+				$("#loadMore span").text("Load More");
+				loading = false;
 			}, "json");
 		});
 		
-{% if readMoreHide %}
-		$("#readMore").hide();
+{% if load_more_hide %}
+		$("#loadMore").hide();
 {% endif %}
 		
 	});
-	
 </script>
 
-<title>Archive - KesiKesi</title>
+<script type="text/javascript">
+$(function() {
+{% ifequal action 'login' %}
+	window.location = "ksks://www.kesikesi.me/page/login/success";
+{% endifequal %}
+});
+</script>
+
+<title>My Archives - KesiKesi</title>
 </head>
 <body>
 	
-<div style="position:relative;background-color: rgba(46,173,201,0.7);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
-	<span>My Archive</span>
+<div style="position:relative;border-radius: 5px; background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+	<span>My Archives</span>
 </div>
 
 <div id="archiveList" style="margin-left: 3px;">
 {% for archive in archive_list %}
-<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;">
-	<a href="/{{ archive.image_key }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" /></a>
+<div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;border-radius: 5px;">
+	<a href="/{{ archive.image_key }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" style="border-radius: 5px;" /></a>
 </div>
 {% endfor %}
 </div>
 
 <div style="clear: both;padding-top: 10px;">
-	<div id="readMore" style="margin:0 auto;width:100px;background-color: rgba(46,173,201,0.7);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
-		<span>More</span>
+	<div id="loadMore" style="margin:0 auto;width:130px;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+		<span>Load More</span>
 	</div>
 </div>
 
 <hr />
 
-<center><p><a href="/page/archive?id={{ user_id }}">Home</a> | <a href="/page/settings?id={{ user_id }}">Settings</a></p></center>
+<center><p>{{ account }}</p></center>
+
+<hr />
+
+<center><p><a href="/page/archive">Home</a> | <a href="/page/settings">Settings</a> | <a href="{{ logout_url }}">Logout</a></p></center>
 
 </body>
 </html>

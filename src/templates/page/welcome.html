@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=320, user-scalable=no /">
+
+<link href='http://fonts.googleapis.com/css?family=Terminal+Dosis' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+	* {
+		-webkit-touch-callout:none;
+	}
+	
+	body {
+		background-image: url(https://twimg0-a.akamaihd.net/profile_background_images/26365115/stripe_8775e6a92916944f4bfa76a79d845088.png);
+		font-family: 'Terminal Dosis', sans-serif;
+	}
+	
+	span {
+		font-weight: bold;
+	}
+</style>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script language="Javascript" type="text/javascript">
+	google.load("jquery", "1");
+	google.load("jqueryui", "1");
+</script>
+
+<script type="text/javascript">
+$(function() {
+	$("#login").click(function(){
+		window.location = "/page/login";
+	});
+	
+	{% ifequal action 'logout' %}
+		window.location = "ksks://www.kesikesi.me/page/logout/success";
+	{% endifequal %}
+});
+</script>
+
+<title>Welcome - KesiKesi</title>
+</head>
+<body>
+	
+<div style="position:relative;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+	<span>Welcome!</span>
+</div>
+
+<p>KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.</p>
+<p>KesiKesi can be used straight away from a Google account.</p>
+
+<div style="clear: both;padding-top: 10px;">
+	<div id="login" style="margin:0 auto;width:100px;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+		<span>Login</span>
+	</div>
+</div>
+
+</body>
+</html>

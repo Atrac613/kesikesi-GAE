@@ -1,43 +1,43 @@
 # -*- coding: utf-8 -*-
 
 import os
-import hashlib
 import logging
-import uuid
 import datetime
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
-from google.appengine.api import images
-from google.appengine.api import memcache
+from google.appengine.api import users
+
 from django.utils import simplejson 
 
 from kesikesi_db import ArchiveList
-from kesikesi_db import OriginalImage
-from kesikesi_db import MaskImage
-
-from config import SECRET_IMAGE_KEY
-from config import SECRET_MASK_KEY
-
-from common import get_related_ids
+from kesikesi_db import UserList
 
 class ArchivePage(webapp.RequestHandler):
     def get(self):
-        user_id = self.request.get('id')
+        user = users.get_current_user()
+        
         date = self.request.get('date')
         
-        related_user_id_list = get_related_ids(user_id)
-        logging.info('Related id: %s' % related_user_id_list)
+        action = self.request.get('action')
+        if action not in ('login'):
+            action = None
         
-        archive_list_query = ArchiveList().all()
-        archive_list_query.filter('user_id IN', related_user_id_list)
+        user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
+        if user_list is None:
+            return self.error(401)
+        
+        archive_list_query = ArchiveList().all().filter('account =', user_list.key())
         if date != '':
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         archive_list_query.order('-created_at')
         
         archive_list = archive_list_query.fetch(2)
+        
+        if len(archive_list) <= 0:
+            return self.redirect('/page/start?action=login')
         
         data = []
         for image in archive_list:
@@ -45,18 +45,23 @@ class ArchivePage(webapp.RequestHandler):
             date = image.created_at.strftime('%Y-%m-%d %H:%M:%S')
             logging.info('date: %s' % date)
         
-        read_more_hide = False
+        load_more_hide = False
         if date != '':
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
             archive_list = archive_list_query.fetch(2)
             if len(archive_list) <= 0:
-                read_more_hide = True
+                load_more_hide = True
+        
+        account = user.email()
+        logout_url = users.create_logout_url('/page/welcome?action=logout')
         
         template_values = {
             'archive_list': data,
-            'user_id': user_id,
-            'readMoreHide': read_more_hide,
-            'date': date
+            'load_more_hide': load_more_hide,
+            'date': date,
+            'account': account,
+            'logout_url': logout_url,
+            'action': action
         }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/page/archive.html')
@@ -64,15 +69,15 @@ class ArchivePage(webapp.RequestHandler):
 
 class ArchiveReadMoreAPI(webapp.RequestHandler):
     def post(self):
-        user_id = self.request.get('id')
-        logging.info('user_id: %s' % user_id)
+        user = users.get_current_user()
         
         date = self.request.get('date')
         
-        related_user_id_list = get_related_ids(user_id)
-        logging.info('Related id: %s' % related_user_id_list)
+        user_list = UserList.all().filter('google_account =', user).get()
+        if user_list is None:
+            return self.error(401)
         
-        archive_list_query = ArchiveList().all()
+        archive_list_query = ArchiveList().all().filter('account =', user_list.key())
         
         if date != '':
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
@@ -86,7 +91,7 @@ class ArchiveReadMoreAPI(webapp.RequestHandler):
             date = image.created_at.strftime('%Y-%m-%d %H:%M:%S')
             #logging.info('date: %s' % date)
             
-        archive_list_query = ArchiveList().all()
+        archive_list_query = ArchiveList().all().filter('account =', user_list.key())
         archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         archive_list_query.order('-created_at')
         archive_list = archive_list_query.fetch(2)

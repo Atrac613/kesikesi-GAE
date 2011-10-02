@@ -19,13 +19,29 @@ handlers:
 
 - url: /api/.*
   script: api.py
+
+- url: /page/test
+  script: page.py
+
+- url: /page/welcome
+  script: page.py
   
+- url: /page/start
+  login: required
+  script: page.py
+
+- url: /page/login
+  login: required
+  script: page.py
+
 - url: /page/archive
   secure: always
+  login: required
   script: archive.py
 
 - url: /page/api/archive_read_more
   secure: always
+  login: required
   script: archive.py
   
 - url: /page/settings

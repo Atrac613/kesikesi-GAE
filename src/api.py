@@ -11,11 +11,14 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.api import images
 from google.appengine.api import memcache
+from google.appengine.api import users
+
 from django.utils import simplejson 
 
 from kesikesi_db import ArchiveList
 from kesikesi_db import OriginalImage
 from kesikesi_db import MaskImage
+from kesikesi_db import UserList
 
 from config import SECRET_IMAGE_KEY
 from config import SECRET_MASK_KEY
@@ -33,29 +36,33 @@ class APITestPage(webapp.RequestHandler):
 
 class UploadAPI(webapp.RequestHandler):
     def post(self):
+        user = users.get_current_user()
         
         data = {}
         org_image = self.request.get('original_image')
         msk_image = self.request.get('mask_image')
-        user_id = self.request.get('user_id')
         mask_mode = self.request.get('mask_mode')
         access_code = self.request.get('access_code')
         
         logging.info('original_image: %d' % len(org_image))
         logging.info('mask_image: %d' % len(msk_image))
-        logging.info('user_id: %s' % user_id)
+        logging.info('User: %s' % user.email())
+        
+        user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
+        if user_list is None:
+            return self.error(401)
         
         if len(mask_mode) == 0:
             mask_mode = 'scratch'
         
         mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level', 'barcode']
         
-        if org_image and msk_image and user_id and mask_mode in mask_mode_list:
+        if org_image and msk_image and mask_mode in mask_mode_list:
             image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()[0:6]
             
             archive_list = ArchiveList()
             archive_list.image_key = image_key
-            archive_list.user_id = user_id
+            archive_list.account = user_list.key()
             archive_list.put()
             
             original_image = OriginalImage()
