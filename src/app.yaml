@@ -39,7 +39,7 @@ handlers:
   login: required
   script: archive.py
 
-- url: /page/api/archive_read_more
+- url: /page/api/archive_load_more
   secure: always
   login: required
   script: archive.py

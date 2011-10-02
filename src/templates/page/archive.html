@@ -38,7 +38,7 @@
 			}
 			loading = true;
 			$("#loadMore span").text("Loading");
-			$.post('/page/api/archive_read_more', {date: date}, function(data){
+			$.post('/page/api/archive_load_more', {date: date}, function(data){
 				for (i in data['data']) {
 					img = '<div style="background-color: #CCCCCC;border-radius: 5px;width: 48px; height:48px;float: left;margin: 6px;">';
 					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" style="border-radius: 5px;" /></a>';

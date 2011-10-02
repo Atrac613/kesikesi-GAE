@@ -15,6 +15,8 @@ from django.utils import simplejson
 from kesikesi_db import ArchiveList
 from kesikesi_db import UserList
 
+from config import IMAGE_FETCH_COUNT
+
 class ArchivePage(webapp.RequestHandler):
     def get(self):
         user = users.get_current_user()
@@ -34,7 +36,7 @@ class ArchivePage(webapp.RequestHandler):
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         archive_list_query.order('-created_at')
         
-        archive_list = archive_list_query.fetch(2)
+        archive_list = archive_list_query.fetch(IMAGE_FETCH_COUNT)
         
         if len(archive_list) <= 0:
             return self.redirect('/page/start?action=login')
@@ -48,7 +50,7 @@ class ArchivePage(webapp.RequestHandler):
         load_more_hide = False
         if date != '':
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
-            archive_list = archive_list_query.fetch(2)
+            archive_list = archive_list_query.fetch(IMAGE_FETCH_COUNT)
             if len(archive_list) <= 0:
                 load_more_hide = True
         
@@ -67,13 +69,13 @@ class ArchivePage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/page/archive.html')
         self.response.out.write(template.render(path, template_values))
 
-class ArchiveReadMoreAPI(webapp.RequestHandler):
+class ArchiveLoadMoreAPI(webapp.RequestHandler):
     def post(self):
         user = users.get_current_user()
         
         date = self.request.get('date')
         
-        user_list = UserList.all().filter('google_account =', user).get()
+        user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
             return self.error(401)
         
@@ -83,7 +85,7 @@ class ArchiveReadMoreAPI(webapp.RequestHandler):
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         archive_list_query.order('-created_at')
         
-        archive_list = archive_list_query.fetch(2)
+        archive_list = archive_list_query.fetch(IMAGE_FETCH_COUNT)
         
         data = []
         for image in archive_list:
@@ -94,7 +96,7 @@ class ArchiveReadMoreAPI(webapp.RequestHandler):
         archive_list_query = ArchiveList().all().filter('account =', user_list.key())
         archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         archive_list_query.order('-created_at')
-        archive_list = archive_list_query.fetch(2)
+        archive_list = archive_list_query.fetch(IMAGE_FETCH_COUNT)
         
         if len(archive_list) <= 0:
             date = False
@@ -107,7 +109,7 @@ class ArchiveReadMoreAPI(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/page/archive', ArchivePage),
-                                      ('/page/api/archive_read_more', ArchiveReadMoreAPI)],
+                                      ('/page/api/archive_load_more', ArchiveLoadMoreAPI)],
                                      debug=True)
 
 def main():
