@@ -49,12 +49,18 @@ class MainPage(webapp.RequestHandler):
         user_agent = self.request.headers.get('user_agent')
         logging.info('UserAgent: %s' % user_agent)
         if 'Mobile' in user_agent and ('Safari' in user_agent or 'AppleWebKit' in user_agent):
-            if 'Mobile' in user_agent and 'Safari' in user_agent:
+            if 'Safari' in user_agent:
                 safari = True
             else:
                 safari = False
+            
+            if 'AppleWebKit' in user_agent:
+                webkit = True
+            else:
+                webkit = False
                 
             template_values['safari'] = safari
+            template_values['webkit'] = webkit
                 
             path = os.path.join(os.path.dirname(__file__), 'templates/image_ios.html')
         else:

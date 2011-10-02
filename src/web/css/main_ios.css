@@ -17,21 +17,16 @@ body {
 }
 
 #header {
-	margin: 10px;
-	padding-left: 10px;
-	width: 150px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	background-color: #CCCCCC;
+	margin-top: 20px;
+	width: 320px;
 	text-align: center;
-	opacity: 0.6;
 	
 }
 
 #header h1 {
-	padding-bottom: 5px;
-	font-size: 1.5em;
-	font-family: 'Sunshiney', serif;
+	padding-bottom: 0px;
+	font-size: 2em;
+	font-family: 'Allerta Stencil', sans-serif;
 	letter-spacing: 0.13em;
 }
 
@@ -62,6 +57,9 @@ body {
 	margin-bottom:5px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	font-size: 1.2em;
+	font-family: 'Black Ops One', cursive;
+	letter-spacing: 0.13em;
 }
 
 .mediumButton {
@@ -91,7 +89,7 @@ body {
 
 #read_count {
 	text-align: center;
-	font-family: 'Sunshiney', serif;
+	font-family: 'Allerta Stencil', sans-serif;
 	font-size: 1em;
 	letter-spacing: 0.13em;
 }
@@ -104,7 +102,7 @@ body {
 
 #footer {
 	text-align: center;
-	font-family: 'Sunshiney', serif;
+	font-family: 'Allerta Stencil', sans-serif;
 	font-size: 1em;
 	letter-spacing: 0.13em;
 }

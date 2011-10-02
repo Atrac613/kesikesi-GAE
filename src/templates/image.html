@@ -3,24 +3,92 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=320">
+<meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
+<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon48"/>
+<meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
+<meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
 <link href="/css/main.css?2011050701" rel="stylesheet" type="text/css" />
-<link href="http://fonts.googleapis.com/css?family=Sunshiney:regular" rel="stylesheet" type="text/css" />
-<title>kesikesi.me</title>
+<link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One' rel='stylesheet' type='text/css'>
+<title>KesiKesi | Turn your photos into a little secret.</title>
 </head>
 <body>
 
 <div id="wrapper">
+	<div id="header"><h1>KesiKesi</h1></div>
+	
+	<div id="free_download">FREE DOWNLOAD</div>
+	
 	<div id="body">
-		<div id="header"><h1>kesikesi.me</h1></div>
-		<div id="photo"><img src="/api/get_image?id={{ image_key }}" width="400" /></div>
-		<div id="qr_code">
-			<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
+		<div style="width: 400px; float: left;">
+			<div id="photo"><img src="/api/get_image?id={{ image_key }}" width="400" /></div>
 		</div>
-		<div id="read_count"><p>{{ read_count }} kesikesi</p></div>
-		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">この投稿を通報する</a></p></div>
-		<div id="footer"><p>(c) Relax Jigyou-bu.</p></div>
+		<div style="margin-left: 410px;">
+			<div id="title">Turn your photos into a little secret.</div>
+			
+			<div id="qr_code">
+				<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
+			</div>
+			<div id="read_count"><p>{{ read_count }} KesiKesi</p></div>
+			<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">Report this page.</a></p></div>
+			
+			<div id="shareButton">
+				<div style="position:absolute;left:0;width:100px;height:30px;">
+					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+				</div>
+				<div style="position:absolute;left:110px;width:60px;height:30px;">
+					<a href="http://mixi.jp/share.pl" class="mixi-check-button">mixiチェック</a>
+	    			<script type="text/javascript" src="http://static.mixi.jp/js/share.js"></script>
+	    		</div>
+    			
+    			<div style="position:absolute;left:180px;top:13px;width:50px;height:30px;">
+	    			<!-- Place this tag where you want the +1 button to render -->
+					<g:plusone annotation="none"></g:plusone>
+					
+					<!-- Place this render call where appropriate -->
+					<script type="text/javascript">
+					  (function() {
+					    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+					    po.src = 'https://apis.google.com/js/plusone.js';
+					    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+					  })();
+					</script>
+				</div>
+				
+				<div style="position:absolute;left:240px;width:100px;height:30px;">
+					<div id="fb-root"></div>
+					<script>(function(d, s, id) {
+					  var js, fjs = d.getElementsByTagName(s)[0];
+					  if (d.getElementById(id)) {return;}
+					  js = d.createElement(s); js.id = id;
+					  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+					  fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));</script>
+					
+					<div class="fb-like" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+				</div>
+				
+				
+			</div>
+			
+			<div style="margin-left:85px;margin-top:20px;margin-bottom:20px; width:234px; height:60px; background-color: #CCCCCC;">
+			<script type="text/javascript"><!--
+			google_ad_client = "ca-pub-1692543340482705";
+			/* kesikesi.me */
+			google_ad_slot = "9323335639";
+			google_ad_width = 234;
+			google_ad_height = 60;
+			//-->
+			</script>
+			<script type="text/javascript"
+			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+			</script>
+			</div>
+	
+		</div>
 	</div>
+	
+	<div id="footer"><p>(c) 2011 KesiKesi.</p></div>
 </div>
 
 </body>
