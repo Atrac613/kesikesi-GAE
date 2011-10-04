@@ -24,6 +24,7 @@ from config import SECRET_IMAGE_KEY
 from config import SECRET_MASK_KEY
 
 from common import convert_square
+from common import gen_imagekey
 
 class APITestPage(webapp.RequestHandler):
     def get(self):
@@ -58,11 +59,13 @@ class UploadAPI(webapp.RequestHandler):
         mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level', 'barcode']
         
         if org_image and msk_image and mask_mode in mask_mode_list:
-            image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()[0:6]
+            #image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()[0:6]
+            image_key = gen_imagekey()
             
             archive_list = ArchiveList()
             archive_list.image_key = image_key
             archive_list.account = user_list.key()
+            archive_list.delete_flg = False
             archive_list.put()
             
             original_image = OriginalImage()
@@ -192,7 +195,7 @@ class GetImageAPI(webapp.RequestHandler):
             return self.error(404)
         
         style = self.request.get('style')
-        if style in ('icon48', 'icon120', 'size240'):
+        if style in ('icon48', 'icon120', 'size240', 'size300'):
             cache_key = 'cached_image_%s_%s' % (image_key, style)
         else:
             style = None
@@ -234,6 +237,8 @@ class GetImageAPI(webapp.RequestHandler):
             if style is not None:
                 if style == 'size240':
                     width = 240
+                elif style == 'size300':
+                    width = 300
                     
             img.resize(width=width)
             img.im_feeling_lucky()

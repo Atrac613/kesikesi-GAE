@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import string
+
+from random import choice
 
 from google.appengine.api import images
 from google.appengine.api import memcache
@@ -50,4 +53,5 @@ def get_related_ids(user_id):
                 
     return user_id_list
             
-        
+def gen_imagekey(length=6, chars=string.letters + string.digits):
+    return ''.join([choice(chars) for i in range(length)])

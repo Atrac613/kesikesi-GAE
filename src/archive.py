@@ -29,9 +29,9 @@ class ArchivePage(webapp.RequestHandler):
         
         user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
-            return self.error(401)
+            return self.redirect('/page/welcome?action=logout')
         
-        archive_list_query = ArchiveList().all().filter('account =', user_list.key())
+        archive_list_query = ArchiveList().all().filter('account =', user_list.key()).filter('delete_flg =', False)
         if date != '':
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
         archive_list_query.order('-created_at')

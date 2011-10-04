@@ -10,15 +10,8 @@ body {
 }
 
 #free_download {
-	width: 210px;
+	width: 140px;
 	height: 40px;
-	line-height: 40px;
-	font-size: 20px;
-	font-family: 'Black Ops One', cursive;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	text-align: center;
-	background-color: rgba(0,51,102,0.35);
 	position: absolute;
 	right: 0px;
 	top: 0px;
@@ -26,20 +19,18 @@ body {
 
 #body {
 	width:800px;
-	height: 540px;
+	height: 500px;
 	margin: 10px;
 	padding: 10px;
 	background-color: rgba(0,51,102,0.4);
-	-moz-border-radius: 12px;
-	border-radius: 12px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 
 #header {
-	margin-top: 30px;
+	margin-top: 20px;
 	margin-left: 20px;
 	width: 250px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
 	text-align: center;
 }
 
@@ -52,9 +43,9 @@ body {
 
 #title {
 	color: #FFFFFF;
-	font-size: 1.2em;
-	font-family: 'Allerta Stencil', sans-serif;
-	padding-left: 25px;
+	font-size: 1.3em;
+	font-family: 'Sansita One', cursive;
+	padding-left: 20px;
 	padding-top: 30px;
 	padding-bottom: 40px;
 }
@@ -64,8 +55,8 @@ body {
 }
 
 #photo img {
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 
 #qr_code {
@@ -74,8 +65,8 @@ body {
 }
 
 #qr_code img {
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 }
 
 #read_count {
@@ -90,6 +81,23 @@ body {
 	text-align: center;
 }
 
+#launchApp {
+	margin:0 auto;
+	margin-top:20px;
+	width:150px;
+	height:30px;
+	line-height:30px;
+	background-color: rgba(46,173,201,0.7);
+	text-align: center;
+	padding: 5px;
+	color: #FFFFFF;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 1.2em;
+	font-family: 'Black Ops One', cursive;
+	letter-spacing: 0.13em;
+}
+
 #shareButton {
 	width: 340px;
 	height: 40px;
@@ -102,8 +110,8 @@ body {
 #footer {
 	clear: both;
 	width: 800px;
-	padding-top: 20px;
-	padding-bottom: 30px;
+	padding-top: 15px;
+	padding-bottom: 20px;
 	text-align: center;
 	font-family: 'Allerta Stencil', sans-serif;
 	font-size: 1em;

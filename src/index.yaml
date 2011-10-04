@@ -18,6 +18,13 @@ indexes:
 
 - kind: ArchiveList
   properties:
+  - name: account
+  - name: delete_flg
+  - name: created_at
+    direction: desc
+
+- kind: ArchiveList
+  properties:
   - name: user_id
   - name: created_at
 

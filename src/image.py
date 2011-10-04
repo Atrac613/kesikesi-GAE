@@ -8,9 +8,13 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.api import memcache
+from google.appengine.api import users
+
+from django.utils import simplejson
 
 from kesikesi_db import ArchiveList
 from kesikesi_db import MaskImage
+from kesikesi_db import UserList
 
 from config import SECRET_MASK_KEY
 
@@ -19,9 +23,18 @@ class MainPage(webapp.RequestHandler):
         if image_key == '' or len(image_key) != 6:
             return self.error(404)
         
-        archive_list_query = ArchiveList().all()
-        archive_list_query.filter('image_key =', image_key)
-        archive_list = archive_list_query.get()
+        archive_list = memcache.get('archive_%s' % image_key)
+        if archive_list is None:
+            archive_list_query = ArchiveList().all()
+            archive_list_query.filter('image_key =', image_key)
+            archive_list_query.filter('delete_flg =', False)
+            archive_list = archive_list_query.get()
+            
+            memcache.add('archive_%s' % image_key, archive_list, 3600)
+            
+            logging.info('Archive from datastore.')
+        else:
+            logging.info('Archive from memcache.')
         
         if archive_list is None:
             return self.error(404)
@@ -41,9 +54,16 @@ class MainPage(webapp.RequestHandler):
             else:
                 read_count = 0
         
+        is_owner = False
+        user = users.get_current_user()
+        if user:
+            if archive_list.account.google_account == user:
+                is_owner = True
+        
         template_values = {
             'image_key': image_key,
-            'read_count': read_count
+            'read_count': read_count,
+            'is_owner': is_owner
         }
         
         user_agent = self.request.headers.get('user_agent')
@@ -62,12 +82,41 @@ class MainPage(webapp.RequestHandler):
             template_values['safari'] = safari
             template_values['webkit'] = webkit
                 
-            path = os.path.join(os.path.dirname(__file__), 'templates/image_ios.html')
+            if 'iPad' in user_agent:
+                path = os.path.join(os.path.dirname(__file__), 'templates/image.html')
+            else:
+                path = os.path.join(os.path.dirname(__file__), 'templates/image_ios.html')
         else:
             path = os.path.join(os.path.dirname(__file__), 'templates/image.html')
         
         self.response.out.write(template.render(path, template_values))
 
+    def post(self, image_key):
+        if image_key == '' or len(image_key) != 6:
+            return self.error(404)
+        
+        archive_list_query = ArchiveList().all()
+        archive_list_query.filter('image_key =', image_key)
+        archive_list_query.filter('delete_flg =', False)
+        archive_list = archive_list_query.get()
+        
+        if archive_list is None:
+            return self.error(404)
+        
+        mode = self.request.get('mode')
+        
+        user = users.get_current_user()
+        if user:
+            if archive_list.account.google_account == user:
+                if mode == 'delete':
+                    archive_list.delete_flg = True
+                    archive_list.put()
+                    
+                    data = {'status': True}
+                    
+                    json = simplejson.dumps(data, ensure_ascii=False)
+                    self.response.content_type = 'application/json'
+                    self.response.out.write(json)
 
 application = webapp.WSGIApplication(
                                      [('/(.*)', MainPage)],

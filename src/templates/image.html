@@ -2,14 +2,48 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=320">
 <meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
-<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon48"/>
+<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
 <meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
-<link href="/css/main.css?2011050701" rel="stylesheet" type="text/css" />
-<link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One' rel='stylesheet' type='text/css'>
+<link href="/css/main.css?20110507012" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One|Sansita+One' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script language="Javascript" type="text/javascript">
+	google.load("jquery", "1");
+	google.load("jqueryui", "1");
+</script>
+
+<script language="Javascript" type="text/javascript">
+$(function() {
+	if (navigator.userAgent.indexOf('iPad') > 0) {
+		$("#launchApp").click(function(){
+			document.location = "ksks://www.kesikesi.me/{{ image_key }}";
+			{% if safari %}
+		    var time = (new Date()).getTime();
+		    setTimeout(function(){
+		        var now = (new Date()).getTime();
+		
+		        if((now - time) < 400) {
+		            if(confirm('You do not seem to have kesikesi installed, do you want to go download it now?')){
+		            	document.location = 'http://itunes.apple.com/';
+		            }
+		         }
+		    }, 300);
+		    {% endif %}
+	    });
+	    
+	    $("#ad").hide();
+	} else {
+		$("#launchApp").hide();
+	}
+});
+</script>
+
+
 <title>KesiKesi | Turn your photos into a little secret.</title>
 </head>
 <body>
@@ -17,20 +51,24 @@
 <div id="wrapper">
 	<div id="header"><h1>KesiKesi</h1></div>
 	
-	<div id="free_download">FREE DOWNLOAD</div>
+	<div id="free_download"><img src="/images/available_appstore_icon.png" width="140" /></div>
 	
 	<div id="body">
-		<div style="width: 400px; float: left;">
-			<div id="photo"><img src="/api/get_image?id={{ image_key }}" width="400" /></div>
+		<div style="width: 380px; float: left;">
+			<div id="photo"><img src="/api/get_image?id={{ image_key }}" width="370" /></div>
 		</div>
-		<div style="margin-left: 410px;">
+		<div style="margin-left: 400px;width: 400px;">
 			<div id="title">Turn your photos into a little secret.</div>
 			
 			<div id="qr_code">
 				<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
 			</div>
 			<div id="read_count"><p>{{ read_count }} KesiKesi</p></div>
-			<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">Report this page.</a></p></div>
+			<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&hl=en&entry_0=http://www.kesikesi.me/{{ image_key }}">Report a Problem.</a></p></div>
+			
+			<div id="launchApp">
+				<span>Scrach!</span>
+			</div>
 			
 			<div id="shareButton">
 				<div style="position:absolute;left:0;width:100px;height:30px;">
@@ -71,18 +109,18 @@
 				
 			</div>
 			
-			<div style="margin-left:85px;margin-top:20px;margin-bottom:20px; width:234px; height:60px; background-color: #CCCCCC;">
-			<script type="text/javascript"><!--
-			google_ad_client = "ca-pub-1692543340482705";
-			/* kesikesi.me */
-			google_ad_slot = "9323335639";
-			google_ad_width = 234;
-			google_ad_height = 60;
-			//-->
-			</script>
-			<script type="text/javascript"
-			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-			</script>
+			<div id="ad" style="margin-left:85px;margin-top:5px;margin-bottom:20px; width:234px; height:60px;">
+				<script type="text/javascript"><!--
+				google_ad_client = "ca-pub-1692543340482705";
+				/* kesikesi.me */
+				google_ad_slot = "9323335639";
+				google_ad_width = 234;
+				google_ad_height = 60;
+				//-->
+				</script>
+				<script type="text/javascript"
+				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
 			</div>
 	
 		</div>

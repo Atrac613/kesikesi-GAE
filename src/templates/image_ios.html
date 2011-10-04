@@ -4,12 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=320px, initial-scale=1.0">
 <meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
-<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon48"/>
+<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
 <meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
-<link href="/css/main_ios.css?2011050701" rel="stylesheet" type="text/css" />
-<link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One' rel='stylesheet' type='text/css'>
+<link href="/css/main_ios.css?20110507d15" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One|Sansita+One' rel='stylesheet' type='text/css'>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
@@ -20,21 +20,35 @@
 
 <script language="Javascript" type="text/javascript">
 $(function() {
-	$("#launchApp").click(function(){
-		document.location = "ksks://www.kesikesi.me/{{ image_key }}";
-		{% if safari %}
-	    var time = (new Date()).getTime();
-	    setTimeout(function(){
-	        var now = (new Date()).getTime();
-	
-	        if((now - time) < 400) {
-	            if(confirm('You do not seem to have kesikesi installed, do you want to go download it now?')){
-	            	document.location = 'http://itunes.apple.com/';
-	            }
-	         }
-	    }, 300);
-	    {% endif %}
+    $("#deleteButton").click(function(){
+    	if (confirm('Are you sure you want to delete this photo?')) {
+    		$.post('/{{ image_key }}', {mode: 'delete'}, function(data){
+    			if (data && data.status) {
+    				window.location = '/page/archive';
+    			}
+    		}, 'json');
+    	}
     });
+    
+	if (navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('iPhone') > 0 || navigator.userAgent.indexOf('iPad') > 0) {
+		$("#launchApp").click(function(){
+			document.location = "ksks://www.kesikesi.me/{{ image_key }}";
+			{% if safari %}
+		    var time = (new Date()).getTime();
+		    setTimeout(function(){
+		        var now = (new Date()).getTime();
+		
+		        if((now - time) < 400) {
+		            if(confirm('You do not seem to have kesikesi installed, do you want to go download it now?')){
+		            	document.location = 'http://itunes.apple.com/';
+		            }
+		         }
+		    }, 300);
+		    {% endif %}
+	    });
+	} else {
+		$("#launchApp").hide();
+	}
 });
 </script>
 
@@ -43,53 +57,46 @@ $(function() {
 <body>
 
 <div id="wrapper">
-{% if webkit %}
-{% else %}
 	<div id="header"><h1>KesiKesi</h1></div>
-{% endif %}	
+	<div id="download"><span><a href="#">Download the Free iPhone App.</a></span></div>
 	<div id="body">
-		<div id="photo"><img src="/api/get_image?id={{ image_key }}&style=size240" width="240" /></div>
+		<div id="photo">
+			<img src="/api/get_image?id={{ image_key }}&style=size300" width="294" />
+			<div style="width:280px;height:40px;">
+				<div style="float: left;margin:5px;left:30px;width:100px;height:30px;">
+					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+				</div>
+				<div style="margin-left:110px;padding-top:3px;width:100px;height:30px;">
+					<div id="fb-root"></div>
+					<script>(function(d, s, id) {
+					  var js, fjs = d.getElementsByTagName(s)[0];
+					  if (d.getElementById(id)) {return;}
+					  js = d.createElement(s); js.id = id;
+					  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+					  fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));</script>
+					
+					<div class="fb-like" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+				</div>
+			</div>
+		</div>
+		
 		<div id="launchApp">
 			<span>Scrach!</span>
 		</div>
-		<div style="position:relative;width:280px;height:40px;padding-top:20px;padding-bottom:20px;">
-			<div style="position:absolute;left:30px;width:50px;height:30px;">
-				<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
-			</div>
-			<div style="position:absolute;left:160px;width:50px;height:30px;">
-				<div id="fb-root"></div>
-				<script>(function(d, s, id) {
-				  var js, fjs = d.getElementsByTagName(s)[0];
-				  if (d.getElementById(id)) {return;}
-				  js = d.createElement(s); js.id = id;
-				  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-				  fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));</script>
-				
-				<div class="fb-like" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
-			</div>
-			<!--
-			<div style="position:absolute;left:60px;top:80px;width:50px;height:30px;">
-				<g:plusone annotation="none"></g:plusone>
-				
-				<script type="text/javascript">
-				  (function() {
-				    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-				    po.src = 'https://apis.google.com/js/plusone.js';
-				    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-				  })();
-				</script>
-			</div>
-			<div style="position:absolute;left:150px;top:85px;width:50px;height:30px;">
-				<a href="http://mixi.jp/share.pl" class="mixi-check-button">mixiチェック</a>
-    			<script type="text/javascript" src="http://static.mixi.jp/js/share.js"></script>
-			</div>-->
-		</div>
+		
 		<div id="qr_code">
 			<p><img src="http://chart.apis.google.com/chart?chs=170x170&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
 		</div>
-		<div id="read_count"><p>{{ read_count }} kesikesi</p></div>
-		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&entry_0=http://www.kesikesi.me/{{ image_key }}">Report this page.</a></p></div>
+		<div id="read_count"><p>{{ read_count }} KesiKesi</p></div>
+		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&hl=en&entry_0=http://www.kesikesi.me/{{ image_key }}">Report a Problem.</a></p></div>
+{% if is_owner %}
+		<div id="deleteButton">
+			<span>DELETE</span>
+		</div>
+{% endif %}
+
+		<div id="title">Turn your photos into a little secret.</div>
 	</div>
 	
 	<div id="footer"><p>(c) 2011 KesiKesi.</p></div>
@@ -107,7 +114,6 @@ $(function() {
   /* ]]> */
 //--></script>
 <script type="text/javascript"    src="http://pagead2.googlesyndication.com/pagead/show_afmc_ads.js"></script>
-
 
 </body>
 </html>
