@@ -105,6 +105,11 @@ class GetOriginalImageAPI(webapp.RequestHandler):
             original_image = original_image_query.get()
             
             if original_image is None:
+                memcache.add('cached_original_%s' % image_id, 404, 3600)
+                return self.error(404)
+            
+            if original_image.archive_list_key.delete_flg:
+                memcache.add('cached_original_%s' % image_id, 404, 3600)
                 return self.error(404)
             
             img = images.Image(original_image.image)
@@ -117,6 +122,9 @@ class GetOriginalImageAPI(webapp.RequestHandler):
             logging.info('Original from DB. id: %s' % image_id)
         else:
             logging.info('Original from memcache. id: %s' % image_id)
+            
+            if thumbnail == 404:
+                return self.error(404)
         
         self.response.headers['Content-Type'] = 'image/png'
         self.response.out.write(thumbnail)
@@ -133,13 +141,20 @@ class GetMaskImageAPI(webapp.RequestHandler):
         mask_image = mask_image_query.get()
         
         if mask_image is None:
+            memcache.add('cached_mask_%s' % image_id, 404, 3600)
+            return self.error(404)
+        
+        if mask_image.archive_list_key.delete_flg:
+            memcache.add('cached_mask_%s' % image_id, 404, 3600)
             return self.error(404)
         
         # Count UP
         mask_image.read_count += 1
         mask_image.put()
         
-        if memcache.get('count_mask_%s' % image_id):
+        logging.info('Read Count: %d' % mask_image.read_count)
+        
+        if memcache.get('count_mask_%s' % image_id) is not None:
             memcache.replace('count_mask_%s' % image_id, mask_image.read_count, 3600)
             logging.info('Count mask replace. id: %s' % image_id)
         else:
@@ -159,6 +174,9 @@ class GetMaskImageAPI(webapp.RequestHandler):
         else:
             logging.info('Mask from memcache. id: %s' % image_id)
             
+            if thumbnail == 404:
+                return self.error(404)
+            
         self.response.headers['Content-Type'] = 'image/png'
         self.response.out.write(thumbnail)
 
@@ -174,6 +192,9 @@ class GetMaskModeAPI(webapp.RequestHandler):
         mask_image = mask_image_query.get()
         
         if mask_image is None:
+            return self.error(404)
+        
+        if mask_image.archive_list_key.delete_flg:
             return self.error(404)
         
         if mask_image.mask_mode is None:
@@ -207,9 +228,11 @@ class GetImageAPI(webapp.RequestHandler):
         if thumbnail is None:
             archive_list_query = ArchiveList().all()
             archive_list_query.filter('image_key =', image_key)
+            archive_list_query.filter('delete_flg =', False)
             archive_list = archive_list_query.get()
             
             if archive_list is None:
+                memcache.add(cache_key, 404, 3600)
                 return self.error(404)
             
             mask_image_key = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_key)).hexdigest()
@@ -255,6 +278,9 @@ class GetImageAPI(webapp.RequestHandler):
             logging.info('Image from DB. image_key: %s' % image_key)
         else:
             logging.info('Image from memcache. image_key: %s' % image_key)
+            
+            if thumbnail == 404:
+                return self.error(404)
         
         self.response.headers['Content-Type'] = 'image/png'
         self.response.out.write(thumbnail)
@@ -280,7 +306,6 @@ class GetArchiveListAPI(webapp.RequestHandler):
         
 class DeleteImageAPI(webapp.RequestHandler):
     def get(self):
-      
         image_key = self.request.get('id')
         user_id = self.request.get('user_id')
         
@@ -325,8 +350,6 @@ application = webapp.WSGIApplication(
                                       ('/api/get_mask_image', GetMaskImageAPI),
                                       ('/api/get_mask_mode', GetMaskModeAPI),
                                       ('/api/get_image', GetImageAPI),
-                                      ('/api/get_archive_list', GetArchiveListAPI),
-                                      ('/api/delete_image', DeleteImageAPI),
                                       ('/api/api_test', APITestPage)],
                                      debug=True)
 

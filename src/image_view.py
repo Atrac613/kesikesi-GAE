@@ -17,6 +17,7 @@ from kesikesi_db import MaskImage
 from kesikesi_db import UserList
 
 from config import SECRET_MASK_KEY
+from config import SECRET_IMAGE_KEY
 
 class MainPage(webapp.RequestHandler):
     def get(self, image_key):
@@ -112,6 +113,16 @@ class MainPage(webapp.RequestHandler):
                     archive_list.delete_flg = True
                     archive_list.put()
                     
+                    mask_image_key = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_key)).hexdigest()
+                    original_image_key = hashlib.md5('%s-%s' % (SECRET_IMAGE_KEY, image_key)).hexdigest()
+        
+                    memcache.delete('cached_mask_%s' % mask_image_key)
+                    memcache.delete('cached_original_%s' % original_image_key)
+                    memcache.delete('cached_image_%s' % image_key)
+                    
+                    for style in ('icon48', 'icon120', 'size240', 'size300'):
+                        memcache.delete('cached_image_%s_%s' % (image_key, style))
+                        
                     data = {'status': True}
                     
                     json = simplejson.dumps(data, ensure_ascii=False)

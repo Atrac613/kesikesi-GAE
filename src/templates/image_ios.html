@@ -53,6 +53,21 @@ $(function() {
 </script>
 
 <title>KesiKesi | Turn your photos into a little secret.</title>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1167116-20']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
 </head>
 <body>
 
@@ -61,7 +76,7 @@ $(function() {
 	<div id="download"><span><a href="#">Download the Free iPhone App.</a></span></div>
 	<div id="body">
 		<div id="photo">
-			<img src="/api/get_image?id={{ image_key }}&style=size300" width="294" />
+			<div style="width:294px;height:387px;"><img src="/api/get_image?id={{ image_key }}&style=size300" width="294" /></div>
 			<div style="width:280px;height:40px;">
 				<div style="float: left;margin:5px;left:30px;width:100px;height:30px;">
 					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>

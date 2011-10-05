@@ -57,6 +57,6 @@ handlers:
   script: main.py
   
 - url: /.*
-  script: image.py
+  script: image_view.py
 
   
