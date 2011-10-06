@@ -62,6 +62,11 @@ class UploadAPI(webapp.RequestHandler):
             #image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()[0:6]
             image_key = gen_imagekey()
             
+            # workaround
+            tmp_archive = ArchiveList.all().filter('image_key =', image_key).get()
+            if tmp_archive is not None:
+                return self.error(500)
+            
             archive_list = ArchiveList()
             archive_list.image_key = image_key
             archive_list.account = user_list.key()

@@ -3,6 +3,7 @@
 import os
 import hashlib
 import logging
+import datetime
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -111,6 +112,7 @@ class MainPage(webapp.RequestHandler):
             if archive_list.account.google_account == user:
                 if mode == 'delete':
                     archive_list.delete_flg = True
+                    archive_list.updated_at = datetime.datetime.now()
                     archive_list.put()
                     
                     mask_image_key = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_key)).hexdigest()

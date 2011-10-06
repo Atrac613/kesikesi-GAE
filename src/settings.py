@@ -12,15 +12,14 @@ from google.appengine.ext import db
 from google.appengine.api import images
 from google.appengine.api import memcache
 from google.appengine.api import users
+from google.appengine.api import taskqueue
+
 from django.utils import simplejson 
 
 from kesikesi_db import ArchiveList
 from kesikesi_db import OriginalImage
 from kesikesi_db import MaskImage
 from kesikesi_db import UserList
-
-from config import SECRET_IMAGE_KEY
-from config import SECRET_MASK_KEY
 
 class SettingsPage(webapp.RequestHandler):
     def get(self):
@@ -30,54 +29,50 @@ class SettingsPage(webapp.RequestHandler):
             'user_id': user_id
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/settings.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/page/settings/index.html')
         self.response.out.write(template.render(path, template_values))
 
-class GooglePage(webapp.RequestHandler):
+class DeleteAllPhotosPage(webapp.RequestHandler):
     def get(self):
-        user = users.get_current_user()
-        account = user.email()
-        
-        mode = self.request.get('mode')
-        user_id = self.request.get('id')
-        
-        user_list = UserList.all().filter('user_id =', user_id).filter('google_account =', user).get()
-        if user_list is not None:
-            connected = True
+
+        status = self.request.get('status')
+        if status == '1':
+            status = True
         else:
-            connected = False
-            
-        if mode == 'connect':
-            if user_list is None:
-                user_list = UserList()
-                user_list.user_id = user_id
-                user_list.google_account = user
-                user_list.put()
-                
-                connected = True
-                
-                memcache.delete('user_id_list_%s' % user_id)
-            
-        elif mode == 'disconnect':
-            user_list.delete()
-            
-            connected = False
-            
-            memcache.delete('user_id_list_%s' % user_id)
+            status = False
         
         template_values = {
-            'account': account,
-            'user_id': user_id,
-            'connected': connected
+            'status': status
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/google.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/page/settings/delete_all_photos.html')
         self.response.out.write(template.render(path, template_values))
 
+    def post(self):
+        user = users.get_current_user()
+        
+        mode = self.request.get('mode')
+        delete = self.request.get('delete')
+        
+        user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
+        if user_list is None:
+            return self.error(401)
+        
+        status = False
+        if mode == 'delete':
+            if delete == '1':
+                try:
+                    taskqueue.add(url='/task/delete_all_photos', params={'id': user_list.key().id()})
+                    status = True
+                except:
+                    status = False
+                    logging.error('Taskqueue add failed.')
+                    
+        self.redirect('/page/settings/delete_all_photos?status=%d' % status)
 
 application = webapp.WSGIApplication(
                                      [('/page/settings', SettingsPage),
-                                      ('/page/settings/google', GooglePage)],
+                                      ('/page/settings/delete_all_photos', DeleteAllPhotosPage)],
                                      debug=True)
 
 def main():

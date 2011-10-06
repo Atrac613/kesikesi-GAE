@@ -48,10 +48,15 @@ handlers:
   secure: always
   script: settings.py
   
-- url: /page/settings/google
+- url: /page/settings/delete_all_photos
   secure: always
   login: required
   script: settings.py
+  
+- url: /task/.*
+  secure: always
+  login: admin
+  script: task.py
 
 - url: /
   script: main.py
