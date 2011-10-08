@@ -2,11 +2,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 <meta name="viewport" content="width=320px, initial-scale=1.0">
 <meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
+
 <meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
 <meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
+
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
 <link href="/css/main_ios.css?20110507d15" rel="stylesheet" type="text/css" />
 <link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One|Sansita+One' rel='stylesheet' type='text/css'>
@@ -15,7 +18,6 @@
 
 <script language="Javascript" type="text/javascript">
 	google.load("jquery", "1");
-	google.load("jqueryui", "1");
 </script>
 
 <script language="Javascript" type="text/javascript">
@@ -39,7 +41,7 @@ $(function() {
 		        var now = (new Date()).getTime();
 		
 		        if((now - time) < 400) {
-		            if(confirm('You do not seem to have kesikesi installed, do you want to go download it now?')){
+		            if(confirm('You do not seem to have KesiKesi installed, do you want to go download it now?')){
 		            	document.location = 'http://itunes.apple.com/';
 		            }
 		         }
@@ -72,7 +74,7 @@ $(function() {
 <body>
 
 <div id="wrapper">
-	<div id="header"><h1>KesiKesi</h1></div>
+	<div id="header"><h1><a href="/">KesiKesi</a></h1></div>
 	<div id="download"><span><a href="#">Download the Free iPhone App.</a></span></div>
 	<div id="body">
 		<div id="photo">
@@ -114,7 +116,7 @@ $(function() {
 		<div id="title">Turn your photos into a little secret.</div>
 	</div>
 	
-	<div id="footer"><p>(c) 2011 KesiKesi.</p></div>
+	<div id="footer"><p>&copy; 2011 KesiKesi.</p></div>
 </div>
 
 <script type="text/javascript"><!--

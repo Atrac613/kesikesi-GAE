@@ -2,7 +2,42 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>けしけし</title>
+<meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
+<meta name="viewport" content="width=1024px, initial-scale=1.0">
+
+<link href="/css/reset.css" rel="stylesheet" type="text/css" />
+<link href="/css/index.css" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One|Sansita+One' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script language="Javascript" type="text/javascript">
+	google.load("jquery", "1");
+	google.load("jqueryui", "1");
+</script>
+
+<script language="Javascript" type="text/javascript">
+$(function() {
+    setInterval(function(){
+    	var $active = $('#slideshow IMG.active');
+	    if ($active.length == 0 ) {
+	    	$active = $('#slideshow IMG:last');
+	    }
+	    var $next = $active.next().length ? $active.next()
+	        : $('#slideshow IMG:first');
+	        
+	    $active.addClass('last-active');
+	    $next.css({opacity: 0.0})
+	        .addClass('active')
+	        .animate({opacity: 1.0}, 1300, function() {
+	            $active.removeClass('active last-active');
+	        });
+    }, 3500);
+});
+</script>
+
+
+<title>KesiKesi | Turn your photos into a little secret.</title>
 
 <script type="text/javascript">
 
@@ -21,7 +56,42 @@
 </head>
 <body>
 
-<p>けっしっし</p>
+<div id="wrapper">
+	<div id="contents">
+		<div id="left_box">
+			<h1>KesiKesi</h1>
+			<h2>Turn your photos into a little secret.</h2>
+		</div>
+		<div id="right_box">
+			<div id="slideshow">
+				<img src="/images/scr1.png" class="active" />
+				<img src="/images/scr2.png" />
+				<img src="/images/scr1.png" />
+				<img src="/images/scr3.png" />
+			</div>
+		</div>
+	</div>
+	<div id="contents_alpha">
+		<div id="title_box">
+			<h3>KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.</h3>
+			<div id="app_store">
+				<a href="#"><img src="/images/app_store.png" /></a>
+			</div>
+			<div id="watch_the_video">
+				<a href="#"><img src="/images/watch_the_video.png" width="233" /></a>
+			</div>
+		</div>
+	</div>
+	
+	<div id="footer">
+		<div id="copyright">
+			&copy; 2011 KesiKesi.
+		</div>
+		<div id="contacts_info">
+			<a href="http://twitter.com/kesikesi_me">Twitter</a>
+		</div>
+	</div>
+</div>
 
 </body>
 </html>

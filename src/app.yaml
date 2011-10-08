@@ -1,4 +1,4 @@
-application: kesikesi-me
+application: kesikesi-hr
 version: 1
 runtime: python
 api_version: 1
@@ -34,15 +34,15 @@ handlers:
   login: required
   script: page.py
 
-- url: /page/archive
+- url: /page/archives
   secure: always
   login: required
-  script: archive.py
+  script: archives.py
 
-- url: /page/api/archive_load_more
+- url: /page/api/archives_load_more
   secure: always
   login: required
-  script: archive.py
+  script: archives.py
   
 - url: /page/settings
   secure: always

@@ -85,11 +85,11 @@ class MainPage(webapp.RequestHandler):
             template_values['webkit'] = webkit
                 
             if 'iPad' in user_agent:
-                path = os.path.join(os.path.dirname(__file__), 'templates/image.html')
+                path = os.path.join(os.path.dirname(__file__), 'templates/view/image.html')
             else:
-                path = os.path.join(os.path.dirname(__file__), 'templates/image_ios.html')
+                path = os.path.join(os.path.dirname(__file__), 'templates/view/image_ios.html')
         else:
-            path = os.path.join(os.path.dirname(__file__), 'templates/image.html')
+            path = os.path.join(os.path.dirname(__file__), 'templates/view/image.html')
         
         self.response.out.write(template.render(path, template_values))
 

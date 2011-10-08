@@ -45,7 +45,7 @@ class LoginPage(webapp.RequestHandler):
                 
                 return self.response.out.write(template.render(path, template_values))
                 
-        self.redirect('/page/archive?action=login')
+        self.redirect('/page/archives?action=login')
 
 class StartPage(webapp.RequestHandler):
     def get(self):
