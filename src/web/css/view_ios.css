@@ -125,9 +125,14 @@ body {
 
 #qr_code {
 	clear: both;
+	background-color: #FFFFFF;
+	width: 170px;
+	height: 180px;
 	margin-top: 20px;
 	margin-left: 65px;
 	margin-bottom: 10px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 #qr_code img {
@@ -145,7 +150,13 @@ body {
 #report {
 	text-align: center;
 	font-size: 1em;
-	margin: 10px auto;
+	margin: 15x auto;
+}
+
+#permalink {
+	margin-top: -15px;
+	font-size: 0.7em;
+	text-align: center;
 }
 
 #footer {
