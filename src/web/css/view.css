@@ -6,14 +6,14 @@ body {
 #wrapper {
 	position: relative;
 	margin: 0 auto;
-	width: 800px;
+	width: 840px;
 }
 
 #free_download {
 	width: 140px;
 	height: 40px;
 	position: absolute;
-	right: 0px;
+	right: 35px;
 	top: 0px;
 }
 

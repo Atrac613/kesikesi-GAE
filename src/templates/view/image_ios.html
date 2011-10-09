@@ -26,7 +26,7 @@ $(function() {
     	if (confirm('Are you sure you want to delete this photo?')) {
     		$.post('/{{ image_key }}', {mode: 'delete'}, function(data){
     			if (data && data.status) {
-    				window.location = '/page/archive';
+    				window.location = '/page/archives';
     			}
     		}, 'json');
     	}
@@ -42,7 +42,7 @@ $(function() {
 		
 		        if((now - time) < 400) {
 		            if(confirm('You do not seem to have KesiKesi installed, do you want to go download it now?')){
-		            	document.location = 'http://itunes.apple.com/';
+		            	document.location = 'http://itunes.apple.com/app/id471597529?mt=8';
 		            }
 		         }
 		    }, 300);
@@ -75,7 +75,7 @@ $(function() {
 
 <div id="wrapper">
 	<div id="header"><h1><a href="/">KesiKesi</a></h1></div>
-	<div id="download"><span><a href="#">Download the Free iPhone App.</a></span></div>
+	<div id="download"><span><a href="http://itunes.apple.com/app/id471597529?mt=8">Download the Free iPhone App.</a></span></div>
 	<div id="body">
 		<div id="photo">
 			<div style="width:294px;height:387px;"><img src="/api/get_image?id={{ image_key }}&style=size300" width="294" /></div>
