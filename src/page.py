@@ -8,9 +8,19 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 
+#from google.appengine.dist import use_library
+#use_library('django', '1.1')
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
+from django.conf import settings
+# Force Django to reload settings
+settings._target = None
+
+from i18NRequestHandler import I18NRequestHandler
+
 from kesikesi_db import UserList
 
-class WelcomePage(webapp.RequestHandler):
+class WelcomePage(I18NRequestHandler):
     def get(self):
         action = self.request.get('action')
         if action not in ('logout'):

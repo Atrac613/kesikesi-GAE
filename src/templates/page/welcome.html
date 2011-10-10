@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% extends "base_generic.html" %}
 
 {% block title %}Welcome - KesiKesi{% endblock %}
@@ -20,15 +22,15 @@ $(function() {
 
 {% block content %}
 <div id="title">
-	<span>Welcome!</span>
+	<span>{% trans "Welcome!" %}</span>
 </div>
 
-<p>KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.</p>
-<p>KesiKesi can be used straight away from a Google account.</p>
+<p>{% trans "KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well." %}</p>
+<p>{% trans "KesiKesi can be used straight away from a Google account." %}</p>
 
 <div style="clear: both;padding-top: 10px;">
 	<div id="login" style="margin:0 auto;width:100px;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
-		<span>Login</span>
+		<span>{% trans "Login" %}</span>
 	</div>
 </div>
 {% endblock %}
