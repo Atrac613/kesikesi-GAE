@@ -1,24 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=320, user-scalable=no /">
+{% extends "base_generic.html" %}
 
-<style>
-	* {
-		-webkit-touch-callout:none;
-	}
-	
-	body {
-		background-image: url(/images/stripe.png);
-	}
-</style>
+{% block title %}Account Locked - KesiKesi{% endblock %}
 
-<title>Account Locked - KesiKesi</title>
-</head>
-<body>
+{% block css %}{% endblock %}
 
-<p>Your account is locked.</p>
-	
-</body>
-</html>
+{% block javascript %}
+{% endblock %}
+
+{% block content %}
+<div id="title">
+	<span>Access Denied</span>
+</div>
+
+<center><p>Your account is locked.</p></center>
+
+<hr />
+
+<center><p><a href="{{ logout_url }}">Logout</a></p></center>
+
+{% endblock %}

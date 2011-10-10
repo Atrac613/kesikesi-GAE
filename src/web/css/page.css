@@ -1,0 +1,19 @@
+* {
+	-webkit-touch-callout:none;
+}
+
+body {
+	background-image: url(/images/stripe.png);
+	font-family: 'Terminal Dosis', sans-serif;
+}
+
+#title {
+	font-weight: bold;
+	border-radius: 5px;
+	background-color: rgba(0,51,102,0.4);
+	text-align: center;
+	padding: 5px;
+	color: #FFFFFF;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}

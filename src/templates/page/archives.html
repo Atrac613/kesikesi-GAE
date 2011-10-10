@@ -1,32 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=320, user-scalable=no /">
+{% extends "base_generic.html" %}
 
-<link href='http://fonts.googleapis.com/css?family=Terminal+Dosis' rel='stylesheet' type='text/css'>
+{% block title %}My Archives - KesiKesi{% endblock %}
 
-<style type="text/css">
-	* {
-		-webkit-touch-callout:none;
-	}
-	
-	body {
-		background-image: url(/images/stripe.png);
-		font-family: 'Terminal Dosis', sans-serif;
-	}
-	
-	span {
-		font-weight: bold;
-	}
-</style>
+{% block css %}{% endblock %}
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-
-<script language="Javascript" type="text/javascript">
-	google.load("jquery", "1");
-</script>
-
+{% block javascript %}
 <script language="Javascript" type="text/javascript">
 	var date = '{{ date }}';
 	var loading = false;
@@ -69,27 +47,10 @@ $(function() {
 {% endifequal %}
 });
 </script>
+{% endblock %}
 
-<title>My Archives - KesiKesi</title>
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-1167116-20']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
-</head>
-<body>
-	
-<div style="position:relative;border-radius: 5px; background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
+{% block content %}
+<div id="title">
 	<span>My Archives</span>
 </div>
 
@@ -103,7 +64,7 @@ $(function() {
 
 <div style="clear: both;padding-top: 10px;">
 	<div id="loadMore" style="margin:0 auto;width:130px;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">
-		<span>Load More</span>
+		<span>Load more</span>
 	</div>
 </div>
 
@@ -114,6 +75,4 @@ $(function() {
 <hr />
 
 <center><p><a href="/page/archives">Home</a> | <a href="/page/settings">Settings</a> | <a href="{{ logout_url }}">Logout</a></p></center>
-
-</body>
-</html>
+{% endblock %}

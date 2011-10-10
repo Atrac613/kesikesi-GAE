@@ -38,11 +38,14 @@ class LoginPage(webapp.RequestHandler):
             user_list.put()
         else:
             if user_list.status != 'stable':
-                path = os.path.join(os.path.dirname(__file__), 'templates/page/account_locked.html')
-
+                logout_url = users.create_logout_url('/page/welcome?action=logout')
+                
                 template_values = {
+                    'logout_url': logout_url
                 }
                 
+                path = os.path.join(os.path.dirname(__file__), 'templates/page/account_locked.html')
+
                 return self.response.out.write(template.render(path, template_values))
                 
         self.redirect('/page/archives?action=login')
