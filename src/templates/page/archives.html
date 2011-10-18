@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% extends "base_generic.html" %}
 
 {% block title %}My Archives - KesiKesi{% endblock %}
@@ -33,6 +35,10 @@
 			}, "json");
 		});
 		
+		$("#howToUseIt").click(function(){
+			window.location = "http://www.youtube.com/watch?v=kAduUbm1FN4";
+		});
+		
 {% if load_more_hide %}
 		$("#loadMore").hide();
 {% endif %}
@@ -61,6 +67,14 @@ $(function() {
 </div>
 {% endfor %}
 </div>
+
+{% if how_to_use_it %}
+<div style="clear: both;padding-top: 10px;">
+	<div id="howToUseIt">
+		<span>{% trans "How to use it.(YouTube)" %}</span>
+	</div>
+</div>
+{% endif %}
 
 <div style="clear: both;padding-top: 10px;">
 	<div id="loadMore" style="margin:0 auto;width:130px;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">

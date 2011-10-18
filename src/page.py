@@ -60,7 +60,7 @@ class LoginPage(webapp.RequestHandler):
                 
         self.redirect('/page/archives?action=login')
 
-class StartPage(webapp.RequestHandler):
+class StartPage(I18NRequestHandler):
     def get(self):
         user = users.get_current_user()
         

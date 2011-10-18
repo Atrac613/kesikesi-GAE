@@ -1,3 +1,5 @@
+{% load i18n %}
+
 {% extends "base_generic.html" %}
 
 {% block title %}My First KesiKesi - KesiKesi{% endblock %}
@@ -10,13 +12,22 @@ $(function() {
 	{% ifequal action 'login' %}
 		window.location = "ksks://www.kesikesi.me/page/login/success";
 	{% endifequal %}
+	
+	$("#howToUseIt").click(function(){
+		window.location = "http://www.youtube.com/watch?v=kAduUbm1FN4";
+	});
 });
 </script>
 
 {% endblock %}
 
 {% block content %}
-<p>Push Camera Button to Start!</p>
+<div style="text-align: right;"><img src="/images/start_here.png" /></div>
+<center><p style="font-size: 1.3em;">Start Here!</p></center>
+
+<div id="howToUseIt">
+	<span>{% trans "How to use it.(YouTube)" %}</span>
+</div>
 
 <hr />
 

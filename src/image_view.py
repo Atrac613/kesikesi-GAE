@@ -29,13 +29,19 @@ class MainPage(webapp.RequestHandler):
         if archive_list is None:
             archive_list_query = ArchiveList().all()
             archive_list_query.filter('image_key =', image_key)
-            archive_list_query.filter('delete_flg =', False)
             archive_list = archive_list_query.get()
+            
+            if archive_list.delete_flg:
+                memcache.add('archive_%s' % image_key, 404, 3600)
+                return self.error(404)
             
             memcache.add('archive_%s' % image_key, archive_list, 3600)
             
             logging.info('Archive from datastore.')
         else:
+            if archive_list == 404:
+                return self.error(404)
+            
             logging.info('Archive from memcache.')
         
         if archive_list is None:
@@ -121,6 +127,7 @@ class MainPage(webapp.RequestHandler):
                     memcache.delete('cached_mask_%s' % mask_image_key)
                     memcache.delete('cached_original_%s' % original_image_key)
                     memcache.delete('cached_image_%s' % image_key)
+                    memcache.delete('archive_%s' % image_key)
                     
                     for style in ('icon48', 'icon120', 'size240', 'size300'):
                         memcache.delete('cached_image_%s_%s' % (image_key, style))

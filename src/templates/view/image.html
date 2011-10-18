@@ -5,6 +5,7 @@
 <meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
 
 <meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
+<meta property="mixi:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120" />
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
 <meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
 
@@ -87,10 +88,10 @@ $(function() {
 			
 			<div id="shareButton">
 				<div style="position:absolute;left:0;width:100px;height:30px;">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me" data-text="#KesiKesi | Turn your photos into a little secret.">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 				</div>
 				<div style="position:absolute;left:110px;width:60px;height:30px;">
-					<a href="http://mixi.jp/share.pl" class="mixi-check-button">mixiチェック</a>
+					<a href="http://mixi.jp/share.pl" class="mixi-check-button" data-key="068c579efd82383ef2a1c7172795eca407b76a88" data-url="http://www.kesikesi.me/{{ image_key }}">mixiチェック</a>
 	    			<script type="text/javascript" src="http://static.mixi.jp/js/share.js"></script>
 	    		</div>
     			

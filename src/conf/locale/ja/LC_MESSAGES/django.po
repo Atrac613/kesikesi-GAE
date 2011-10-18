@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-10 22:47+0900\n"
+"POT-Creation-Date: 2011-10-18 23:01+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,10 @@ msgstr ""
 msgid "Japanese"
 msgstr ""
 
+#: templates/page/archives.html:74 templates/page/start.html:29
+msgid "How to use it.(YouTube)"
+msgstr "使い方ビデオ(YouTube)"
+
 #: templates/page/welcome.html:25
 msgid "Welcome!"
 msgstr "ようこそ！"
@@ -34,12 +38,13 @@ msgid ""
 "KesiKesi is a photo sharing application that allows you to hide certain "
 "areas that you would like to keep secret, and to reveal the hidden areas as "
 "well."
-msgstr "KesiKesi は写真のちょっと秘密にしたい部分を隠したり隠した部分を表示したりできる写真共有アプリです。"
+msgstr ""
+"KesiKesi は写真のちょっと秘密にしたい部分を隠したり隠した部分を元に戻したりで"
+"きる写真共有アプリです。"
 
 #: templates/page/welcome.html:29
 msgid "KesiKesi can be used straight away from a Google account."
 msgstr "KesiKesi は Google アカウントで今すぐ始められます。"
 
-#: templates/page/welcome.html:33
-msgid "Login"
-msgstr "ログイン"
+#~ msgid "Login"
+#~ msgstr "ログイン"

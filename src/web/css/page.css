@@ -17,3 +17,16 @@ body {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+
+#howToUseIt {
+	width: 190px;
+	margin: 0 auto;
+	font-weight: bold;
+	border-radius: 5px;
+	background-color: rgba(0,51,102,0.4);
+	text-align: center;
+	padding: 5px;
+	color: #FFFFFF;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}

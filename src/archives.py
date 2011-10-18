@@ -17,7 +17,14 @@ from kesikesi_db import UserList
 
 from config import IMAGE_FETCH_COUNT
 
-class ArchivesPage(webapp.RequestHandler):
+os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
+from django.conf import settings
+# Force Django to reload settings
+settings._target = None
+
+from i18NRequestHandler import I18NRequestHandler
+
+class ArchivesPage(I18NRequestHandler):
     def get(self):
         user = users.get_current_user()
         
@@ -47,6 +54,10 @@ class ArchivesPage(webapp.RequestHandler):
             date = image.created_at.strftime('%Y-%m-%d %H:%M:%S')
             logging.info('date: %s' % date)
         
+        how_to_use_it = False
+        if len(archive_list) < 5:
+            how_to_use_it = True
+        
         load_more_hide = False
         if date != '':
             archive_list_query.filter('created_at <', datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
@@ -63,7 +74,8 @@ class ArchivesPage(webapp.RequestHandler):
             'date': date,
             'account': account,
             'logout_url': logout_url,
-            'action': action
+            'action': action,
+            'how_to_use_it': how_to_use_it
         }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/page/archives.html')
