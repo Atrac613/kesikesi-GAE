@@ -73,7 +73,7 @@ class DeleteAllPhotosPage(webapp.RequestHandler):
 application = webapp.WSGIApplication(
                                      [('/page/settings', SettingsPage),
                                       ('/page/settings/delete_all_photos', DeleteAllPhotosPage)],
-                                     debug=True)
+                                     debug=False)
 
 def main():
     run_wsgi_app(application)

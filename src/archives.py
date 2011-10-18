@@ -122,7 +122,7 @@ class ArchivesLoadMoreAPI(webapp.RequestHandler):
 application = webapp.WSGIApplication(
                                      [('/page/archives', ArchivesPage),
                                       ('/page/api/archives_load_more', ArchivesLoadMoreAPI)],
-                                     debug=True)
+                                     debug=False)
 
 def main():
     run_wsgi_app(application)

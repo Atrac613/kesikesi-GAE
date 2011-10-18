@@ -94,7 +94,7 @@ application = webapp.WSGIApplication(
                                       ('/page/login', LoginPage),
                                       ('/page/start', StartPage),
                                       ('/page/test', SchemeTestPage)],
-                                     debug=True)
+                                     debug=False)
 
 def main():
     run_wsgi_app(application)

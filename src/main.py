@@ -17,7 +17,7 @@ class HomePage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/', HomePage)],
-                                     debug=True)
+                                     debug=False)
 
 def main():
     run_wsgi_app(application)

@@ -140,7 +140,7 @@ class MainPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/(.*)', MainPage)],
-                                     debug=True)
+                                     debug=False)
 
 def main():
     run_wsgi_app(application)
