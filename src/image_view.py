@@ -31,7 +31,7 @@ class MainPage(webapp.RequestHandler):
             archive_list_query.filter('image_key =', image_key)
             archive_list = archive_list_query.get()
             
-            if archive_list.delete_flg:
+            if archive_list is None or archive_list.delete_flg:
                 memcache.add('archive_%s' % image_key, 404, 3600)
                 return self.error(404)
             
