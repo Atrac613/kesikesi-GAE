@@ -40,10 +40,28 @@ class UploadAPI(webapp.RequestHandler):
         user = users.get_current_user()
         
         data = {}
-        org_image = self.request.get('original_image')
-        msk_image = self.request.get('mask_image')
-        mask_mode = self.request.get('mask_mode')
-        access_code = self.request.get('access_code')
+        
+        tmp_image_key = self.request.get('tmp_image_key')
+        
+        if tmp_image_key:
+            logging.info('tmp_image_key: %s' % tmp_image_key)
+            tmp_image = memcache.get('tmp_%s' % tmp_image_key)
+            
+            if tmp_image:
+                org_image = tmp_image['org_image']
+                msk_image = tmp_image['msk_image']
+                mask_mode = tmp_image['mask_mode']
+                access_code = tmp_image['access_code']
+            else:
+                return self.error(500)
+            
+        else:
+            org_image = self.request.get('original_image')
+            msk_image = self.request.get('mask_image')
+            mask_mode = self.request.get('mask_mode')
+            access_code = self.request.get('access_code')
+        
+        comment = self.request.get('comment')
         
         logging.info('original_image: %d' % len(org_image))
         logging.info('mask_image: %d' % len(msk_image))
@@ -69,6 +87,7 @@ class UploadAPI(webapp.RequestHandler):
             
             archive_list = ArchiveList()
             archive_list.image_key = image_key
+            archive_list.comment = comment
             archive_list.account = user_list.key()
             archive_list.delete_flg = False
             archive_list.put()
@@ -87,6 +106,42 @@ class UploadAPI(webapp.RequestHandler):
             mask_image.read_count = 0
             mask_image.access_code = access_code
             mask_image.put()
+            
+            data = {'image_key': image_key}
+        else:
+            data = {'image_key': False}
+            
+        json = simplejson.dumps(data, ensure_ascii=False)
+        self.response.content_type = 'application/json'
+        self.response.out.write(json)
+        
+class UploadImageAPI(webapp.RequestHandler):
+    def post(self):
+        user = users.get_current_user()
+        
+        data = {}
+        msk_image = self.request.get('mask_image')
+        org_image = self.request.get('original_image')
+        mask_mode = self.request.get('mask_mode')
+        access_code = self.request.get('access_code')
+        
+        logging.info('original_image: %d' % len(org_image))
+        logging.info('mask_image: %d' % len(msk_image))
+        logging.info('User: %s' % user.email())
+        
+        user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
+        if user_list is None:
+            return self.error(401)
+        
+        if len(mask_mode) == 0:
+            mask_mode = 'scratch'
+        
+        mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level', 'barcode']
+        
+        if org_image and msk_image and mask_mode in mask_mode_list:
+            image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()
+            
+            memcache.add('tmp_%s' % image_key, {'org_image': org_image, 'msk_image': msk_image, 'mask_mode': mask_mode, 'access_code': access_code}, 3600)
             
             data = {'image_key': image_key}
         else:
@@ -351,6 +406,7 @@ class DeleteImageAPI(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/api/upload', UploadAPI),
+                                      ('/api/upload_image', UploadImageAPI),
                                       ('/api/get_original_image', GetOriginalImageAPI),
                                       ('/api/get_mask_image', GetMaskImageAPI),
                                       ('/api/get_mask_mode', GetMaskModeAPI),

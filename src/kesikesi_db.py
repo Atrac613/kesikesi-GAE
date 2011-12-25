@@ -15,6 +15,7 @@ class UserList(db.Model):
 class ArchiveList(db.Model):
     account = db.ReferenceProperty(UserList)
     image_key = db.StringProperty()
+    comment = db.StringProperty()
     delete_flg = db.BooleanProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
     updated_at = db.DateTimeProperty(auto_now_add=True)
