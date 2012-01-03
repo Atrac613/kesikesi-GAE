@@ -20,7 +20,7 @@
 			$.post('/page/api/archives_load_more', {date: date}, function(data){
 				for (i in data['data']) {
 					img = '<div style="background-color: #CCCCCC;border-radius: 5px;width: 48px; height:48px;float: left;margin: 6px;">';
-					img += '<a href="/'+ data['data'][i]['image_key'] +'"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" style="border-radius: 5px;" /></a>';
+					img += '<a href="/'+ data['data'][i]['image_key'] +'?actionButton={{ actionButton }}"><img src="/api/get_image?id='+ data['data'][i]['image_key'] +'&style=icon48" style="border-radius: 5px;" /></a>';
 					img += '</div>';
 					console.log(data['data'][i]['image_key']);
 					$("#archiveList").append(img);
@@ -42,6 +42,10 @@
 {% if load_more_hide %}
 		$("#loadMore").hide();
 {% endif %}
+
+{% ifequal version '2' %}
+	window.location = "ksks://www.kesikesi.me/actionButton/off";
+{% endifequal %}
 		
 	});
 </script>
@@ -63,7 +67,7 @@ $(function() {
 <div id="archiveList" style="margin-left: 3px;">
 {% for archive in archive_list %}
 <div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;border-radius: 5px;">
-	<a href="/{{ archive.image_key }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" style="border-radius: 5px;" /></a>
+	<a href="/{{ archive.image_key }}?actionButton={{ actionButton }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" style="border-radius: 5px;" /></a>
 </div>
 {% endfor %}
 </div>

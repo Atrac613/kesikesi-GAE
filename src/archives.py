@@ -33,6 +33,16 @@ class ArchivesPage(I18NRequestHandler):
         action = self.request.get('action')
         if action not in ('login'):
             action = None
+            
+        version = self.request.get('version')
+        if version not in ('2'):
+            version = 1;
+            actionButton = False
+        else:
+            actionButton = True
+            
+        if user is None:
+            return self.redirect('/page/welcome?version=%s' % version)
         
         user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
@@ -66,7 +76,7 @@ class ArchivesPage(I18NRequestHandler):
                 load_more_hide = True
         
         account = user.email()
-        logout_url = users.create_logout_url('/page/welcome?action=logout')
+        logout_url = users.create_logout_url('/page/welcome?action=logout&version=%s' % version)
         
         template_values = {
             'archive_list': data,
@@ -75,7 +85,9 @@ class ArchivesPage(I18NRequestHandler):
             'account': account,
             'logout_url': logout_url,
             'action': action,
-            'how_to_use_it': how_to_use_it
+            'how_to_use_it': how_to_use_it,
+            'version': version,
+            'actionButton': actionButton
         }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/page/archives.html')

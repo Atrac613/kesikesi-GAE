@@ -54,6 +54,12 @@ class MainPage(I18NRequestHandler):
         if archive_list is None:
             return self.error(404)
         
+        actionButton = self.request.get('actionButton')
+        if actionButton == 'True':
+            actionButton = True
+        else:
+            actionButton = False
+        
         mask_image_key = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_key)).hexdigest()
         read_count = memcache.get('count_mask_%s' % mask_image_key)
         if read_count is None:
@@ -75,10 +81,13 @@ class MainPage(I18NRequestHandler):
             if archive_list.account.google_account == user:
                 is_owner = True
         
+        page_title = None
         try:
             comment = archive_list.comment
             if comment == '' or comment == None:
                 comment = 'no comment.'
+            else:
+                page_title = comment
         except:
             comment = 'no comment.'
         
@@ -86,7 +95,9 @@ class MainPage(I18NRequestHandler):
             'image_key': image_key,
             'comment': comment,
             'read_count': read_count,
-            'is_owner': is_owner
+            'is_owner': is_owner,
+            'page_title': page_title,
+            'actionButton': actionButton
         }
         
         user_agent = self.request.headers.get('user_agent')

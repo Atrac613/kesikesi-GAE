@@ -26,6 +26,10 @@ handlers:
 - url: /page/welcome
   script: page.py
   
+- url: /page/auth
+  login: required
+  script: page.py
+  
 - url: /page/start
   login: required
   script: page.py
@@ -36,7 +40,6 @@ handlers:
 
 - url: /page/archives
   secure: always
-  login: required
   script: archives.py
 
 - url: /page/api/archives_load_more

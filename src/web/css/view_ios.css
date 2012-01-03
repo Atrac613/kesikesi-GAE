@@ -69,6 +69,19 @@ body {
 	padding: 3px;
 }
 
+#comment {
+	width: 290px;
+	font-style: italic;
+	font-weight: bold;
+	font-size:0.8em;
+	line-height: 2em;
+	text-align: center;
+	background-color: rgba(255,255,255,0.9);
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-left: 5px;
+}
+
 #download span a {
 	font-family: 'Sansita One', cursive;
 	font-size: 0.7em;

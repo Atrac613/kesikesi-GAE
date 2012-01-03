@@ -26,8 +26,17 @@ class WelcomePage(I18NRequestHandler):
         if action not in ('logout'):
             action = None
 
+        version = self.request.get('version')
+        if version not in ('2'):
+            version = 1;
+            
+        user = users.get_current_user()
+        if user is not None:
+            return self.redirect('/page/archives?action=login')
+            
         template_values = {
-            'action': action
+            'action': action,
+            'version': version
         }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/page/welcome.html')
@@ -37,6 +46,11 @@ class LoginPage(webapp.RequestHandler):
     def get(self):
         
         device_id = self.request.get('id')
+        
+        version = self.request.get('version')
+        if version not in ('2'):
+            version = 1;
+        
         user = users.get_current_user()
         
         user_list = UserList.all().filter('google_account =', user).get()
@@ -58,7 +72,10 @@ class LoginPage(webapp.RequestHandler):
 
                 return self.response.out.write(template.render(path, template_values))
                 
-        self.redirect('/page/archives?action=login')
+        if version == '2':
+            self.redirect('/page/auth?success=True')
+        else:
+            self.redirect('/page/archives?action=login')
 
 class StartPage(I18NRequestHandler):
     def get(self):
@@ -80,6 +97,19 @@ class StartPage(I18NRequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/page/start.html')
         self.response.out.write(template.render(path, template_values))
 
+class AuthPage(webapp.RequestHandler):
+    def get(self):
+        
+        success = self.request.get('success')
+        if success == 'True':
+            template_values = {
+            }
+            
+            path = os.path.join(os.path.dirname(__file__), 'templates/page/auth_success.html')
+            self.response.out.write(template.render(path, template_values))
+        else:
+            self.redirect('/page/login?version=2')
+
 class SchemeTestPage(webapp.RequestHandler):
     def get(self):
 
@@ -93,6 +123,7 @@ application = webapp.WSGIApplication(
                                      [('/page/welcome', WelcomePage),
                                       ('/page/login', LoginPage),
                                       ('/page/start', StartPage),
+                                      ('/page/auth', AuthPage),
                                       ('/page/test', SchemeTestPage)],
                                      debug=False)
 

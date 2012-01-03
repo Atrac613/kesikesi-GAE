@@ -1,0 +1,19 @@
+{% load i18n %}
+
+{% extends "base_generic.html" %}
+
+{% block title %}Welcome - KesiKesi{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$(function() {
+	window.location = "ksks://www.kesikesi.me/page/auth/success";
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<p>Please wait.</p>
+{% endblock %}
