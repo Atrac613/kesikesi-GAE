@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load i18n %}<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
 
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
-<link href="/css/view_ios.css?20110507d15" rel="stylesheet" type="text/css" />
+<link href="/css/view_ios.css?2012010200" rel="stylesheet" type="text/css" />
 <link href='http://fonts.googleapis.com/css?family=Allerta+Stencil|Black+Ops+One|Sansita+One' rel='stylesheet' type='text/css'>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -78,7 +78,8 @@ $(function() {
 	<div id="download"><span><a href="http://itunes.apple.com/app/id471597529?mt=8">Download the Free iPhone App.</a></span></div>
 	<div id="body">
 		<div id="photo">
-			<div style="width:294px;height:387px;"><img src="/api/get_image?id={{ image_key }}&style=size300" width="294" /></div>
+			<div style="width:294px;height:300px;"><img src="/api/get_image?id={{ image_key }}&style=size300" width="294" /></div>
+			<div style="width:100%;font-style: italic; font-weight: bold; font-size:0.8em;line-height: 2em; text-align: center;">{{ comment }}</div>
 			<div style="width:280px;height:40px;">
 				<div style="float: left;margin:5px;left:30px;width:100px;height:30px;">
 					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me" data-text="#KesiKesi | Turn your photos into a little secret.">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
@@ -97,6 +98,9 @@ $(function() {
 				</div>
 			</div>
 		</div>
+		
+		<div id="sub_title">{% trans "Let's use the app to do the scratching!" %}</div>
+		<div id="title_message">{% trans "You can scratch to reveal the hidden parts." %}</div>
 		
 		<div id="launchApp">
 			<span>Scratch!</span>
@@ -117,7 +121,7 @@ $(function() {
 		<div id="title">Turn your photos into a little secret.</div>
 	</div>
 	
-	<div id="footer"><p>&copy; 2011 KesiKesi.</p></div>
+	<div id="footer"><p>&copy; 2012 KesiKesi.</p></div>
 </div>
 
 <script type="text/javascript"><!--

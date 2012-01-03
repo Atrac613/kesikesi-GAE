@@ -40,6 +40,25 @@ body {
 	text-align: center;
 }
 
+#sub_title {
+	clear: both;
+	width: 100%;
+	color: #FFFFFF;
+	font-size: 0.9em;
+	font-family: 'Sansita One', cursive;
+	text-align: center;
+	font-weight: bold;
+}
+
+#title_message {
+	clear: both;
+	width: 100%;
+	color: #FFFFFF;
+	font-size: 0.8em;
+	font-family: 'Sansita One', cursive;
+	text-align: center;
+}
+
 #download {
 	position:absolute;
 	right: 10px;
@@ -59,7 +78,7 @@ body {
 
 #photo {
 	width: 300px;
-	height: 418px;
+	height: 356px;
 	background-color: #CCCCCC;
 	-moz-border-radius: 5px;
 	border-radius: 5px;

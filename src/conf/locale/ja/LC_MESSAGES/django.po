@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-18 23:01+0900\n"
+"POT-Creation-Date: 2012-01-03 16:46+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,6 +45,25 @@ msgstr ""
 #: templates/page/welcome.html:29
 msgid "KesiKesi can be used straight away from a Google account."
 msgstr "KesiKesi は Google アカウントで今すぐ始められます。"
+
+#: templates/view/image.html:82 templates/view/image_ios.html:102
+msgid "Let's use the app to do the scratching!"
+msgstr "アプリを使ってスクラッチしよう！"
+
+#: templates/view/image.html:83 templates/view/image_ios.html:103
+msgid "You can scratch to reveal the hidden parts."
+msgstr "隠れてる部分はスクラッチできます。"
+
+#: templates/view/image.html:89
+msgid "Report a Problem."
+msgstr "問題を報告"
+
+#, fuzzy
+#~ msgid "Let's use the app to do the scratching"
+#~ msgstr "アプリを使ってスクラッチしよう！"
+
+#~ msgid "Let's use the app to do the scratching."
+#~ msgstr "アプリを使ってスクラッチしよう。"
 
 #~ msgid "Login"
 #~ msgstr "ログイン"

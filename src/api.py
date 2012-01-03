@@ -66,6 +66,7 @@ class UploadAPI(webapp.RequestHandler):
         logging.info('original_image: %d' % len(org_image))
         logging.info('mask_image: %d' % len(msk_image))
         logging.info('User: %s' % user.email())
+        logging.info('Comment: %s', comment)
         
         user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
@@ -158,26 +159,38 @@ class GetOriginalImageAPI(webapp.RequestHandler):
         if image_id == '':
             return self.error(404)
         
-        thumbnail = memcache.get('cached_original_%s' % image_id)
+        version = self.request.get('version')
+        if version not in ('2'):
+            version = 1;
+        
+        thumbnail = memcache.get('cached_original_%s_%s' % (version, image_id))
         if thumbnail is None:
             original_image_query = OriginalImage().all()
             original_image_query.filter('access_key =', image_id)
             original_image = original_image_query.get()
             
             if original_image is None:
-                memcache.add('cached_original_%s' % image_id, 404, 3600)
+                memcache.add('cached_original_%s_%s' % (version, image_id), 404, 3600)
                 return self.error(404)
             
             if original_image.archive_list_key.delete_flg:
-                memcache.add('cached_original_%s' % image_id, 404, 3600)
+                memcache.add('cached_original_%s_%s' % (version, image_id), 404, 3600)
                 return self.error(404)
             
             img = images.Image(original_image.image)
-            img.resize(width=320)
-            img.im_feeling_lucky()
-            thumbnail = img.execute_transforms(output_encoding=images.PNG)
             
-            memcache.add('cached_original_%s' % image_id, thumbnail, 3600)
+            if version == '2':
+                img.resize(width=640)
+                img.im_feeling_lucky()
+                thumbnail = img.execute_transforms(output_encoding=images.PNG)
+                thumbnail = convert_square(thumbnail, 640, 640)
+            else:
+                img.resize(width=320)
+                img.im_feeling_lucky()
+                thumbnail = img.execute_transforms(output_encoding=images.PNG)
+                #thumbnail = convert_square(thumbnail, 320, 320)
+            
+            memcache.add('cached_original_%s_%s' % (version, image_id), thumbnail, 3600)
             
             logging.info('Original from DB. id: %s' % image_id)
         else:
@@ -196,16 +209,20 @@ class GetMaskImageAPI(webapp.RequestHandler):
         if image_id == '':
             return self.error(404)
         
+        version = self.request.get('version')
+        if version not in ('2'):
+            version = 1;
+        
         mask_image_query = MaskImage().all()
         mask_image_query.filter('access_key =', image_id)
         mask_image = mask_image_query.get()
         
         if mask_image is None:
-            memcache.add('cached_mask_%s' % image_id, 404, 3600)
+            memcache.add('cached_mask_%s_%s' % (version, image_id), 404, 3600)
             return self.error(404)
         
         if mask_image.archive_list_key.delete_flg:
-            memcache.add('cached_mask_%s' % image_id, 404, 3600)
+            memcache.add('cached_mask_%s_%s' % (version, image_id), 404, 3600)
             return self.error(404)
         
         # Count UP
@@ -221,14 +238,22 @@ class GetMaskImageAPI(webapp.RequestHandler):
             memcache.add('count_mask_%s' % image_id, mask_image.read_count, 3600)
             logging.info('Count mask add. id: %s' % image_id)
         
-        thumbnail = memcache.get('cached_mask_%s' % image_id)
+        thumbnail = memcache.get('cached_mask_%s_%s' % (version, image_id))
         if thumbnail is None:
             img = images.Image(mask_image.image)
-            img.resize(width=320)
-            img.im_feeling_lucky()
-            thumbnail = img.execute_transforms(output_encoding=images.PNG)
             
-            memcache.add('cached_mask_%s' % image_id, thumbnail, 3600)
+            if version == '2':
+                img.resize(width=320)
+                img.im_feeling_lucky()
+                thumbnail = img.execute_transforms(output_encoding=images.PNG)
+                thumbnail = convert_square(thumbnail, 320, 320)
+            else:
+                img.resize(width=320)
+                img.im_feeling_lucky()
+                thumbnail = img.execute_transforms(output_encoding=images.PNG)
+                #thumbnail = convert_square(thumbnail, 320, 320)
+            
+            memcache.add('cached_mask_%s_%s' % (version, image_id), thumbnail, 3600)
             
             logging.info('Mask from db. id: %s' % image_id)
         else:
@@ -261,8 +286,15 @@ class GetMaskModeAPI(webapp.RequestHandler):
             mask_mode = 'scratch'
         else:
             mask_mode = mask_image.mask_mode
+            
+        try:
+            comment = mask_image.archive_list_key.comment
+            if comment == '' or comment == None:
+                comment = 'no comment.'
+        except:
+            comment = 'no comment.'
         
-        data = {'mask_mode': mask_mode, 'access_code': mask_image.access_code}
+        data = {'mask_mode': mask_mode, 'access_code': mask_image.access_code, 'comment': comment}
         
         json = simplejson.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
@@ -308,11 +340,23 @@ class GetImageAPI(webapp.RequestHandler):
             if mask_image is None or original_image is None:
                 return self.error(404)
             
-            all_images = []
-            all_images.append((original_image.image, 0, 0, 1.0, images.TOP_LEFT))
-            all_images.append((mask_image.image, 0, 0, 1.0, images.TOP_LEFT))
+            mask_image = images.Image(mask_image.image)
+            mask_image.resize(width=640)
+            mask_image.im_feeling_lucky()
+            new_mask_image = mask_image.execute_transforms(output_encoding=images.PNG)
+            new_mask_image = convert_square(new_mask_image, 640, 640)
             
-            image_c = images.composite(all_images, 320, 416, 0, images.PNG, 100)
+            original_image = images.Image(original_image.image)
+            original_image.resize(width=640)
+            original_image.im_feeling_lucky()
+            new_original_image = original_image.execute_transforms(output_encoding=images.PNG)
+            new_original_image = convert_square(new_original_image, 640, 640)
+            
+            all_images = []
+            all_images.append((new_original_image, 0, 0, 1.0, images.TOP_LEFT))
+            all_images.append((new_mask_image, 0, 0, 1.0, images.TOP_LEFT))
+            
+            image_c = images.composite(all_images, 640, 640, 0, images.PNG, 100)
             
             img = images.Image(image_c)
             

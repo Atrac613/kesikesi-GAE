@@ -20,7 +20,14 @@ from kesikesi_db import UserList
 from config import SECRET_MASK_KEY
 from config import SECRET_IMAGE_KEY
 
-class MainPage(webapp.RequestHandler):
+os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
+from django.conf import settings
+# Force Django to reload settings
+settings._target = None
+
+from i18NRequestHandler import I18NRequestHandler
+
+class MainPage(I18NRequestHandler):
     def get(self, image_key):
         if image_key == '' or len(image_key) != 6:
             return self.error(404)
@@ -68,8 +75,16 @@ class MainPage(webapp.RequestHandler):
             if archive_list.account.google_account == user:
                 is_owner = True
         
+        try:
+            comment = archive_list.comment
+            if comment == '' or comment == None:
+                comment = 'no comment.'
+        except:
+            comment = 'no comment.'
+        
         template_values = {
             'image_key': image_key,
+            'comment': comment,
             'read_count': read_count,
             'is_owner': is_owner
         }

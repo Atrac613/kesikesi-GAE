@@ -44,25 +44,45 @@ body {
 }
 
 #title {
+	width: 100%;
 	color: #FFFFFF;
 	font-size: 1.3em;
 	font-family: 'Sansita One', cursive;
-	padding-left: 20px;
-	padding-top: 30px;
-	padding-bottom: 40px;
+	padding-left: 0px;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	text-align: center;
+}
+
+#title_message {
+	width: 100%;
+	color: #FFFFFF;
+	font-size: 0.8em;
+	font-family: 'Sansita One', cursive;
+	padding-left: 0px;
+	padding-bottom: 20px;
+	text-align: center;
 }
 
 #photo {
 	margin: 10px;
-}
-
-#photo img {
+	background-color: #CCCCCC;
+	height: 435px;
+	width: 370px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
 }
 
+#photo img {
+	width: 364px;
+	height: 364px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	margin: 3px;
+}
+
 #qr_code {
-	margin-left: 100px;
+	margin-left: 110px;
 	margin-bottom: 10px;
 }
 
@@ -74,7 +94,7 @@ body {
 #read_count {
 	text-align: center;
 	font-family: 'Allerta Stencil', sans-serif;
-	padding-top: 10px;
+	padding-top: 5px;
 	font-size: 1.3em;
 	letter-spacing: 0.13em;
 }
@@ -103,7 +123,7 @@ body {
 #shareButton {
 	width: 340px;
 	height: 40px;
-	margin-top: 10px;
+	margin-top: 5px;
 	margin-left: 60px;
 	padding-top: 15px;
 	position: relative;
