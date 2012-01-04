@@ -27,7 +27,8 @@ def convert_square(image_src, width, height):
     x = (thumb_width - width) / 2.0
     y = (thumb_height - height) / 2.0
     image.crop(x/thumb_width, y/thumb_height, 1.0-(x/thumb_width), 1.0-(y/thumb_height))
-            
+    #image.im_feeling_lucky()
+    
     return image.execute_transforms(output_encoding=images.PNG)
 
 def get_related_ids(user_id):

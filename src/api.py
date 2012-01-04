@@ -181,13 +181,18 @@ class GetOriginalImageAPI(webapp.RequestHandler):
             
             if version == '2':
                 img.resize(width=640)
-                img.im_feeling_lucky()
+                #img.im_feeling_lucky()
                 thumbnail = img.execute_transforms(output_encoding=images.PNG)
                 thumbnail = convert_square(thumbnail, 640, 640)
+                
+                # Workaround
+                img = images.Image(thumbnail)
+                img.resize(width=640)
+                thumbnail = img.execute_transforms(output_encoding=images.JPEG)
             else:
                 img.resize(width=320)
-                img.im_feeling_lucky()
-                thumbnail = img.execute_transforms(output_encoding=images.PNG)
+                #img.im_feeling_lucky()
+                thumbnail = img.execute_transforms(output_encoding=images.JPEG)
                 #thumbnail = convert_square(thumbnail, 320, 320)
             
             memcache.add('cached_original_%s_%s' % (version, image_id), thumbnail, 3600)
@@ -199,7 +204,7 @@ class GetOriginalImageAPI(webapp.RequestHandler):
             if thumbnail == 404:
                 return self.error(404)
         
-        self.response.headers['Content-Type'] = 'image/png'
+        self.response.headers['Content-Type'] = 'image/jpeg'
         self.response.out.write(thumbnail)
 
 class GetMaskImageAPI(webapp.RequestHandler):
@@ -244,12 +249,12 @@ class GetMaskImageAPI(webapp.RequestHandler):
             
             if version == '2':
                 img.resize(width=320)
-                img.im_feeling_lucky()
+                #img.im_feeling_lucky()
                 thumbnail = img.execute_transforms(output_encoding=images.PNG)
                 thumbnail = convert_square(thumbnail, 320, 320)
             else:
                 img.resize(width=320)
-                img.im_feeling_lucky()
+                #img.im_feeling_lucky()
                 thumbnail = img.execute_transforms(output_encoding=images.PNG)
                 #thumbnail = convert_square(thumbnail, 320, 320)
             
@@ -368,8 +373,8 @@ class GetImageAPI(webapp.RequestHandler):
                     width = 300
                     
             img.resize(width=width)
-            img.im_feeling_lucky()
-            thumbnail = img.execute_transforms(output_encoding=images.PNG)
+            #img.im_feeling_lucky()
+            thumbnail = img.execute_transforms(output_encoding=images.JPEG)
             
             if style is not None:
                 if style == 'icon48':
@@ -386,7 +391,7 @@ class GetImageAPI(webapp.RequestHandler):
             if thumbnail == 404:
                 return self.error(404)
         
-        self.response.headers['Content-Type'] = 'image/png'
+        self.response.headers['Content-Type'] = 'image/jpeg'
         self.response.out.write(thumbnail)
     
 class GetArchiveListAPI(webapp.RequestHandler):
