@@ -1,32 +1,28 @@
 # -*- coding: utf-8 -*-
 
 import os
-import hashlib
 import logging
-import uuid
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
-from google.appengine.ext import db
-from google.appengine.api import images
-from google.appengine.api import memcache
 from google.appengine.api import users
 from google.appengine.api import taskqueue
 
 from django.utils import simplejson 
 
-from kesikesi_db import ArchiveList
-from kesikesi_db import OriginalImage
-from kesikesi_db import MaskImage
 from kesikesi_db import UserList
 
 class SettingsPage(webapp.RequestHandler):
     def get(self):
         user_id = self.request.get('id')
         
+        user = users.get_current_user()
+        account = user.email()
+        
         template_values = {
-            'user_id': user_id
+            'user_id': user_id,
+            'account': account
         }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/page/settings/index.html')
@@ -34,7 +30,10 @@ class SettingsPage(webapp.RequestHandler):
 
 class DeleteAllPhotosPage(webapp.RequestHandler):
     def get(self):
-
+        
+        user = users.get_current_user()
+        account = user.email()
+        
         status = self.request.get('status')
         if status == '1':
             status = True
@@ -42,7 +41,8 @@ class DeleteAllPhotosPage(webapp.RequestHandler):
             status = False
         
         template_values = {
-            'status': status
+            'status': status,
+            'account': account
         }
         
         path = os.path.join(os.path.dirname(__file__), 'templates/page/settings/delete_all_photos.html')
