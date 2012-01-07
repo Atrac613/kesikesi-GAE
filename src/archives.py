@@ -25,7 +25,7 @@ settings._target = None
 from i18NRequestHandler import I18NRequestHandler
 
 class ArchivesPage(I18NRequestHandler):
-    def get(self):
+    def get(self, version='v1'):
         user = users.get_current_user()
         
         date = self.request.get('date')
@@ -34,19 +34,20 @@ class ArchivesPage(I18NRequestHandler):
         if action not in ('login'):
             action = None
             
-        version = self.request.get('version')
-        if version not in ('2'):
-            version = 1;
+        if version not in ('v1', 'v2'):
+            return self.error(501)
+        
+        if version == 'v1':
             actionButton = False
         else:
             actionButton = True
             
         if user is None:
-            return self.redirect('/page/welcome?version=%s' % version)
+            return self.redirect('/page/%s/welcome' % version)
         
         user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
-            return self.redirect('/page/welcome?action=logout')
+            return self.redirect('/page/%s/welcome?action=logout' % version)
         
         archive_list_query = ArchiveList().all().filter('account =', user_list.key()).filter('delete_flg =', False)
         if date != '':
@@ -56,7 +57,7 @@ class ArchivesPage(I18NRequestHandler):
         archive_list = archive_list_query.fetch(IMAGE_FETCH_COUNT)
         
         if len(archive_list) <= 0:
-            return self.redirect('/page/start?action=login')
+            return self.redirect('/page/%s/start?action=login' % version)
         
         data = []
         for image in archive_list:
@@ -76,7 +77,7 @@ class ArchivesPage(I18NRequestHandler):
                 load_more_hide = True
         
         account = user.email()
-        logout_url = users.create_logout_url('/page/welcome?action=logout&version=%s' % version)
+        logout_url = users.create_logout_url('/page/%s/welcome?action=logout' % version)
         
         template_values = {
             'archive_list': data,
@@ -132,7 +133,8 @@ class ArchivesLoadMoreAPI(webapp.RequestHandler):
         self.response.out.write(json)
 
 application = webapp.WSGIApplication(
-                                     [('/page/archives', ArchivesPage),
+                                     [('/page/archives', ArchivesPage), # deprecated
+                                      ('/page/(.*)/archives', ArchivesPage),
                                       ('/page/api/archives_load_more', ArchivesLoadMoreAPI)],
                                      debug=False)
 

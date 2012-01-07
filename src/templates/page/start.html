@@ -9,8 +9,12 @@
 {% block javascript %}
 <script type="text/javascript">
 $(function() {
-	{% ifequal action 'login' %}
-		window.location = "ksks://www.kesikesi.me/page/login/success";
+	{% ifequal version 'v2' %}
+		window.location = "ksks://www.kesikesi.me/buttonStatus?navigationButton=on&actionButton=off";
+	{% else %}
+		{% ifequal action 'login' %}
+			window.location = "ksks://www.kesikesi.me/page/login/success";
+		{% endifequal %}
 	{% endifequal %}
 	
 	$("#howToUseIt").click(function(){
@@ -35,5 +39,5 @@ $(function() {
 
 <hr />
 
-<center><p><a href="/page/archive">Home</a> | <a href="/page/settings">Settings</a> | <a href="{{ logout_url }}">Logout</a></p></center>
+<center><p><a href="/page/settings">Settings</a> | <a href="{{ logout_url }}">Logout</a></p></center>
 {% endblock %}

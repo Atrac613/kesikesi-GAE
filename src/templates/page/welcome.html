@@ -10,19 +10,19 @@
 <script type="text/javascript">
 $(function() {
 	$("#login").click(function(){
-		{% ifequal version '2' %}
+		{% ifequal version 'v2' %}
 		window.location = "ksks://www.kesikesi.me/page/auth";
 		{% else %}
 		window.location = "/page/login";
 		{% endifequal %}
 	});
 	
-	{% ifequal action 'logout' %}
-		window.location = "ksks://www.kesikesi.me/page/logout/success";
-	{% endifequal %}
-	
-	{% ifequal version '2' %}
-		window.location = "ksks://www.kesikesi.me/actionButton/off";
+	{% ifequal version 'v2' %}
+		window.location = "ksks://www.kesikesi.me/buttonStatus?navigationButton=off&actionButton=off";
+	{% else %}
+		{% ifequal action 'logout' %}
+			window.location = "ksks://www.kesikesi.me/page/logout/success";
+		{% endifequal %}
 	{% endifequal %}
 });
 </script>

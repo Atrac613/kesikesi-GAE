@@ -20,24 +20,26 @@ handlers:
 - url: /api/.*
   script: api.py
 
-- url: /page/test
-  script: page.py
-
-- url: /page/welcome
-  script: page.py
-  
-- url: /page/auth
+- url: /page/v2/auth
   login: required
+  secure: always
   script: page.py
   
 - url: /page/start
   login: required
+  secure: always
   script: page.py
 
 - url: /page/login
   login: required
+  secure: always
   script: page.py
 
+- url: /page/v2/archives
+  secure: always
+  script: archives.py
+
+# deprecated
 - url: /page/archives
   secure: always
   script: archives.py
@@ -55,6 +57,10 @@ handlers:
   secure: always
   login: required
   script: settings.py
+  
+- url: /page/.*
+  secure: always
+  script: page.py
   
 - url: /task/.*
   secure: always

@@ -80,6 +80,10 @@ body {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	margin-left: 5px;
+	
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 #download span a {

@@ -36,8 +36,11 @@ class APITestPage(webapp.RequestHandler):
         self.response.out.write(template.render(path, template_values))
 
 class UploadAPI(webapp.RequestHandler):
-    def post(self):
+    def post(self, version='v1'):
         user = users.get_current_user()
+        
+        if version not in ('v1', 'v2'):
+            return self.error(501)
         
         data = {}
         
@@ -51,6 +54,7 @@ class UploadAPI(webapp.RequestHandler):
                 org_image = tmp_image['org_image']
                 msk_image = tmp_image['msk_image']
                 mask_mode = tmp_image['mask_mode']
+                mask_type = tmp_image['mask_type']
                 access_code = tmp_image['access_code']
             else:
                 return self.error(500)
@@ -59,6 +63,7 @@ class UploadAPI(webapp.RequestHandler):
             org_image = self.request.get('original_image')
             msk_image = self.request.get('mask_image')
             mask_mode = self.request.get('mask_mode')
+            mask_type = self.request.get('mask_type')
             access_code = self.request.get('access_code')
         
         comment = self.request.get('comment')
@@ -67,6 +72,7 @@ class UploadAPI(webapp.RequestHandler):
         logging.info('mask_image: %d' % len(msk_image))
         logging.info('User: %s' % user.email())
         logging.info('Comment: %s', comment)
+        logging.info('MaskType: %s', mask_type)
         
         user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
@@ -76,6 +82,10 @@ class UploadAPI(webapp.RequestHandler):
             mask_mode = 'scratch'
         
         mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level', 'barcode']
+        
+        mask_type_list = ['black', 'mosaic', 'caution', 'zebra', 'note']
+        if mask_type not in mask_type_list:
+            mask_type = 'black'
         
         if org_image and msk_image and mask_mode in mask_mode_list:
             #image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()[0:6]
@@ -106,6 +116,7 @@ class UploadAPI(webapp.RequestHandler):
             mask_image.access_key = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_key)).hexdigest()
             mask_image.read_count = 0
             mask_image.access_code = access_code
+            mask_image.mask_type = mask_type
             mask_image.put()
             
             data = {'image_key': image_key}
@@ -117,32 +128,32 @@ class UploadAPI(webapp.RequestHandler):
         self.response.out.write(json)
         
 class UploadImageAPI(webapp.RequestHandler):
-    def post(self):
+    def post(self, version='v2'):
         user = users.get_current_user()
+        
+        if version not in ('v2'):
+            return self.error(501)
         
         data = {}
         msk_image = self.request.get('mask_image')
         org_image = self.request.get('original_image')
         mask_mode = self.request.get('mask_mode')
+        mask_type = self.request.get('mask_type')
         access_code = self.request.get('access_code')
         
         logging.info('original_image: %d' % len(org_image))
         logging.info('mask_image: %d' % len(msk_image))
         logging.info('User: %s' % user.email())
+        logging.info('MaskType: %s' % mask_type);
         
         user_list = UserList.all().filter('google_account =', user).filter('status =', 'stable').get()
         if user_list is None:
             return self.error(401)
         
-        if len(mask_mode) == 0:
-            mask_mode = 'scratch'
-        
-        mask_mode_list = ['scratch', 'accelerometer1', 'accelerometer2', 'sound_level', 'barcode']
-        
-        if org_image and msk_image and mask_mode in mask_mode_list:
+        if org_image and msk_image:
             image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()
             
-            memcache.add('tmp_%s' % image_key, {'org_image': org_image, 'msk_image': msk_image, 'mask_mode': mask_mode, 'access_code': access_code}, 3600)
+            memcache.add('tmp_%s' % image_key, {'org_image': org_image, 'msk_image': msk_image, 'mask_mode': mask_mode, 'mask_type': mask_type, 'access_code': access_code}, 3600)
             
             data = {'image_key': image_key}
         else:
@@ -153,15 +164,14 @@ class UploadImageAPI(webapp.RequestHandler):
         self.response.out.write(json)
         
 class GetOriginalImageAPI(webapp.RequestHandler):
-    def get(self):
+    def get(self, version='v1'):
       
         image_id = self.request.get('id')
         if image_id == '':
             return self.error(404)
         
-        version = self.request.get('version')
-        if version not in ('2'):
-            version = 1;
+        if version not in ('v1', 'v2'):
+            return self.error(501)
         
         thumbnail = memcache.get('cached_original_%s_%s' % (version, image_id))
         if thumbnail is None:
@@ -179,7 +189,7 @@ class GetOriginalImageAPI(webapp.RequestHandler):
             
             img = images.Image(original_image.image)
             
-            if version == '2':
+            if version == 'v2':
                 img.resize(width=640)
                 #img.im_feeling_lucky()
                 thumbnail = img.execute_transforms(output_encoding=images.PNG)
@@ -208,15 +218,14 @@ class GetOriginalImageAPI(webapp.RequestHandler):
         self.response.out.write(thumbnail)
 
 class GetMaskImageAPI(webapp.RequestHandler):
-    def get(self):
+    def get(self, version='v1'):
       
         image_id = self.request.get('id')
         if image_id == '':
             return self.error(404)
         
-        version = self.request.get('version')
-        if version not in ('2'):
-            version = 1;
+        if version not in ('v1', 'v2'):
+            return self.error(501)
         
         mask_image_query = MaskImage().all()
         mask_image_query.filter('access_key =', image_id)
@@ -247,7 +256,7 @@ class GetMaskImageAPI(webapp.RequestHandler):
         if thumbnail is None:
             img = images.Image(mask_image.image)
             
-            if version == '2':
+            if version == 'v2':
                 img.resize(width=320)
                 #img.im_feeling_lucky()
                 thumbnail = img.execute_transforms(output_encoding=images.PNG)
@@ -347,13 +356,13 @@ class GetImageAPI(webapp.RequestHandler):
             
             mask_image = images.Image(mask_image.image)
             mask_image.resize(width=640)
-            mask_image.im_feeling_lucky()
+            #mask_image.im_feeling_lucky()
             new_mask_image = mask_image.execute_transforms(output_encoding=images.PNG)
             new_mask_image = convert_square(new_mask_image, 640, 640)
             
             original_image = images.Image(original_image.image)
             original_image.resize(width=640)
-            original_image.im_feeling_lucky()
+            #original_image.im_feeling_lucky()
             new_original_image = original_image.execute_transforms(output_encoding=images.PNG)
             new_original_image = convert_square(new_original_image, 640, 640)
             
@@ -454,10 +463,13 @@ class DeleteImageAPI(webapp.RequestHandler):
         self.response.out.write(json)
 
 application = webapp.WSGIApplication(
-                                     [('/api/upload', UploadAPI),
-                                      ('/api/upload_image', UploadImageAPI),
-                                      ('/api/get_original_image', GetOriginalImageAPI),
-                                      ('/api/get_mask_image', GetMaskImageAPI),
+                                     [('/api/upload', UploadAPI), # deprecated
+                                      ('/api/(.*)/upload', UploadAPI),
+                                      ('/api/(.*)/upload_image', UploadImageAPI),
+                                      ('/api/get_original_image', GetOriginalImageAPI), # deprecated
+                                      ('/api/(.*)/get_original_image', GetOriginalImageAPI),
+                                      ('/api/get_mask_image', GetMaskImageAPI), # deprecated
+                                      ('/api/(.*)/get_mask_image', GetMaskImageAPI),
                                       ('/api/get_mask_mode', GetMaskModeAPI),
                                       ('/api/get_image', GetImageAPI),
                                       ('/api/api_test', APITestPage)],

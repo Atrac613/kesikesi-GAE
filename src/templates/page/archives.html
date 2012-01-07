@@ -43,19 +43,15 @@
 		$("#loadMore").hide();
 {% endif %}
 
-{% ifequal version '2' %}
-	window.location = "ksks://www.kesikesi.me/actionButton/off";
+{% ifequal version 'v2' %}
+	window.location = "ksks://www.kesikesi.me/buttonStatus?navigationButton=on&actionButton=off";
+{% else %}
+	{% ifequal action 'login' %}
+		window.location = "ksks://www.kesikesi.me/page/login/success";
+	{% endifequal %}
 {% endifequal %}
 		
 	});
-</script>
-
-<script type="text/javascript">
-$(function() {
-{% ifequal action 'login' %}
-	window.location = "ksks://www.kesikesi.me/page/login/success";
-{% endifequal %}
-});
 </script>
 {% endblock %}
 
@@ -92,5 +88,5 @@ $(function() {
 
 <hr />
 
-<center><p><a href="/page/archives">Home</a> | <a href="/page/settings">Settings</a> | <a href="{{ logout_url }}">Logout</a></p></center>
+<center><p><a href="/page/settings">Settings</a> | <a href="{{ logout_url }}">Logout</a></p></center>
 {% endblock %}
