@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-03 16:46+0900\n"
+"POT-Creation-Date: 2012-01-17 23:57+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,30 +25,35 @@ msgstr ""
 msgid "Japanese"
 msgstr ""
 
-#: templates/page/archives.html:74 templates/page/start.html:29
+#: templates/page/archives.html:74 templates/page/start.html:33
 msgid "How to use it.(YouTube)"
 msgstr ""
 
-#: templates/page/welcome.html:25
+#: templates/page/welcome.html:33
 msgid "Welcome!"
 msgstr ""
 
-#: templates/page/welcome.html:28
+#: templates/page/welcome.html:36
 msgid ""
-"KesiKesi is a photo sharing application that allows you to hide certain "
-"areas that you would like to keep secret, and to reveal the hidden areas as "
-"well."
+"Get the same feeling of excitement with your iPhone as not knowing what will "
+"appear until you scratch off a scratch card!"
 msgstr ""
 
-#: templates/page/welcome.html:29
+#: templates/page/welcome.html:37
+msgid ""
+"KesiKesi is a photo-sharing app that lets mask whatever area of your own "
+"photos that you want to create original scratch cards."
+msgstr ""
+
+#: templates/page/welcome.html:39
 msgid "KesiKesi can be used straight away from a Google account."
 msgstr ""
 
-#: templates/view/image.html:82 templates/view/image_ios.html:102
+#: templates/view/image.html:82 templates/view/image_ios.html:110
 msgid "Let's use the app to do the scratching!"
 msgstr ""
 
-#: templates/view/image.html:83 templates/view/image_ios.html:103
+#: templates/view/image.html:83 templates/view/image_ios.html:111
 msgid "You can scratch to reveal the hidden parts."
 msgstr ""
 
