@@ -2,11 +2,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
+<meta name="description" content="{% trans "KesiKesi is a photo-sharing app that lets mask whatever area of your own photos that you want to create original scratch cards." %}">
 
 <meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
 <meta property="mixi:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120" />
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
+{% if page_title %}
+<meta property="og:title" content="{{ page_title }}"/>
+{% else %}
+<meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
+{% endif %}
 <meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
 
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
@@ -45,7 +50,11 @@ $(function() {
 });
 </script>
 
+{% if page_title %}
+<title>{{ page_title }}</title>
+{% else %}
 <title>KesiKesi | Turn your photos into a little secret.</title>
+{% endif %}
 
 <script type="text/javascript">
 
