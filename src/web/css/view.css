@@ -99,6 +99,18 @@ body {
 	letter-spacing: 0.13em;
 }
 
+#comment {
+	width:100%;
+	font-style:italic;
+	font-weight: bold;
+	font-size:1em;
+	line-height: 2em;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
 #report {
 	text-align: center;
 }
