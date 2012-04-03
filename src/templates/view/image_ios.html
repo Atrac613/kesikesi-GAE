@@ -55,7 +55,119 @@ $(function() {
 	{% if actionButton %}
 	window.location = "ksks://www.kesikesi.me/buttonStatus?actionButton=on";
 	{% endif %}
+	
+	var maskCanvas = document.getElementById('maskCanvas');
+	var maskContext = maskCanvas.getContext('2d');
+	maskCanvas.width = 294;
+	maskCanvas.height = 294;
+	
+	var maskImage = new Image();
+	maskImage.width = 294;
+	maskImage.height = 294;
+	maskImage.src="/api/v2/get_mask_image?id={{ image_key }}";
+	maskImage.onload = function() {
+	    maskContext.drawImage(maskImage, 0, 0, 294, 294);
+	    
+	    $("#original_image").show();
+	    
+	    var maskTypeImage = new Image();
+	    
+	    {% ifequal mask_type 'black' %}
+			maskTypeImage.src="/images/btn0.png";
+		{% endifequal %}
+		
+		{% ifequal mask_type 'mosaic' %}
+			maskTypeImage.src="/images/btn1.png";
+		{% endifequal %}
+		
+		{% ifequal mask_type 'caution' %}
+			maskTypeImage.src="/images/btn2.png";
+		{% endifequal %}
+		
+		{% ifequal mask_type 'zebra' %}
+			maskTypeImage.src="/images/btn3.png";
+		{% endifequal %}
+		
+		{% ifequal mask_type 'note' %}
+			maskTypeImage.src="/images/btn4.png";
+		{% endifequal %}
+		
+		maskTypeImage.onload = function() {
+			$("#maskType img").attr('src', maskTypeImage.src);
+
+			var buttom;
+			var maskCanvasBottom = $("#maskCanvas").offset().top + $("#maskCanvas").height();
+			if ($(window).height() > (maskCanvasBottom + 90)) {
+				bottom = $(window).height() - maskCanvasBottom - 70;
+			} else {
+				bottom = 10;
+			}
+			$("#alertBox").css('position', 'absolute');
+		    $("#alertBox").css('bottom', bottom);
+		    $("#alertBox").css('left', ($(window).width() / 2) - 120);
+		    $("#alertBox").fadeIn().delay(5000).fadeOut();
+		};
+	    
+	};
+	
 });
+
+window.addEventListener('load',function(){
+	
+	// get the canvas element and its context
+	var canvas = document.getElementById('maskCanvas');
+	var context = canvas.getContext('2d');
+	
+	// create a drawer which tracks touch movements
+	var drawer = {
+		isDrawing: false,
+		touchstart: function(coors){
+			context.beginPath();
+			context.moveTo(coors.x, coors.y);
+			this.isDrawing = true;
+		},
+		touchmove: function(coors){
+			if (this.isDrawing) {
+		        context.lineTo(coors.x, coors.y);
+		        context.globalCompositeOperation = "destination-out";
+		        context.strokeStyle = "rgba(0,0,0,1.0)";
+		        context.lineWidth = 20;
+		        context.stroke();
+			}
+		},
+		touchend: function(coors){
+			if (this.isDrawing) {
+		        this.touchmove(coors);
+		        this.isDrawing = false;
+			}
+		}
+	};
+	// create a function to pass touch events and coordinates to drawer
+	function draw(event){
+		// get the touch coordinates
+		var coors = {
+			x: event.targetTouches[0].pageX - 10,
+			y: event.targetTouches[0].pageY - 36
+		};
+		// pass the coordinates to the appropriate handler
+		drawer[event.type](coors);
+	}
+	
+	// attach the touchstart, touchmove, touchend event listeners.
+    canvas.addEventListener('touchstart',draw, false);
+    canvas.addEventListener('touchmove',draw, false);
+    canvas.addEventListener('touchend',draw, false);
+	
+	// prevent elastic scrolling
+	document.body.addEventListener('touchmove',function(event){
+	    if (event.target.tagName.toLowerCase() == "canvas") {
+	    	event.preventDefault();
+	    }
+		//event.preventDefault();
+	},false);	// end body.onTouchMove
+		
+},false);	// end window.onLoad
+	
 </script>
 
 {% if page_title %}
@@ -78,6 +190,17 @@ $(function() {
 
 </script>
 
+<style>
+	#alertBox {
+		display:none;
+		width:240px;
+		height:82px;
+		background-color: #FFFFFF;
+		border-radius: 10px;
+		box-shadow: 0px 3px 10px 0px #000;
+	}
+</style>
+
 </head>
 <body>
 
@@ -86,7 +209,10 @@ $(function() {
 	<div id="download"><span><a href="http://itunes.apple.com/app/id471597529?mt=8">Download the Free iPhone App.</a></span></div>
 	<div id="body">
 		<div id="photo">
-			<div style="width:294px;height:300px;"><img src="/api/get_image?id={{ image_key }}&style=size300" width="294" /></div>
+			<div style="width:294px;height:294px;position:relative;">
+				<img src="/api/v2/get_original_image?id={{ image_key }}" width="294" height="294" id="original_image" style="display:none;" />
+				<canvas id="maskCanvas" style="position:absolute; left:3px; top:3px; width:294px; height:294px;"></canvas>
+			</div>
 			<div id="comment">{{ comment }}</div>
 			<div style="width:280px;height:40px;">
 				<div style="float: left;margin:5px;left:30px;width:100px;height:30px;">
@@ -103,6 +229,18 @@ $(function() {
 					}(document, 'script', 'facebook-jssdk'));</script>
 					
 					<div class="fb-like" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="alertBox">
+			<div style="position:relative;width:240px;height:30px;top:-13px;text-align:center;"><img src="/images/uparrow.png" /></div>
+			<div style="position:relative;width:240px;height:90px;top:-24px;text-align:center;">
+				<div style="float:left;width:70px;height:70px;margin-left: 5px;" id="maskType">
+					<img src="" width="70" height="70" />
+				</div>
+				<div style="margin-left: 70px;line-height:70px;font-size: 20px;font-family: 'Allerta Stencil', sans-serif;">
+					{% trans "Scratch Here!" %}
 				</div>
 			</div>
 		</div>
@@ -131,7 +269,6 @@ $(function() {
 	
 	<div id="footer"><p>&copy; 2012 KesiKesi.</p></div>
 </div>
-
 <script type="text/javascript"><!--
   // XHTML should not attempt to parse these strings, declare them CDATA.
   /* <![CDATA[ */

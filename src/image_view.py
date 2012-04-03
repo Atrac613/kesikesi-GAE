@@ -74,6 +74,21 @@ class MainPage(I18NRequestHandler):
                 logging.info('Count mask add. id: %s' % image_key)
             else:
                 read_count = 0
+                
+        mask_type = memcache.get('mask_type_%s' % mask_image_key)
+        if mask_type is None:
+            mask_image_query = MaskImage().all()
+            mask_image_query.filter('access_key =', mask_image_key)
+            mask_image = mask_image_query.get()
+            
+            try:
+                mask_type = mask_image.mask_type
+            except:
+                mask_type = 'black'
+                
+            memcache.add('mask_type_%s' % mask_image_key, mask_image.mask_type, 3600)
+        
+        logging.info('Mask type: %s id: %s' % (image_key, mask_type))
         
         is_owner = False
         user = users.get_current_user()
@@ -97,7 +112,8 @@ class MainPage(I18NRequestHandler):
             'read_count': read_count,
             'is_owner': is_owner,
             'page_title': page_title,
-            'actionButton': actionButton
+            'actionButton': actionButton,
+            'mask_type': mask_type
         }
         
         user_agent = self.request.headers.get('user_agent')

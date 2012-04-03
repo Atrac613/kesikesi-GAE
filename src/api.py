@@ -170,8 +170,11 @@ class GetOriginalImageAPI(webapp.RequestHandler):
         if image_id == '':
             return self.error(404)
         
-        if version not in ('v1', 'v2'):
+        if version not in ('v1', 'v2', 'v3'):
             return self.error(501)
+        
+        if len(image_id) == 6:
+            image_id = hashlib.md5('%s-%s' % (SECRET_IMAGE_KEY, image_id)).hexdigest()
         
         thumbnail = memcache.get('cached_original_%s_%s' % (version, image_id))
         if thumbnail is None:
@@ -226,6 +229,9 @@ class GetMaskImageAPI(webapp.RequestHandler):
         
         if version not in ('v1', 'v2'):
             return self.error(501)
+        
+        if len(image_id) == 6:
+            image_id = hashlib.md5('%s-%s' % (SECRET_MASK_KEY, image_id)).hexdigest()
         
         mask_image_query = MaskImage().all()
         mask_image_query.filter('access_key =', image_id)
