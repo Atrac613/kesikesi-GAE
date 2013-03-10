@@ -1,0 +1,21 @@
+#Mon Oct 10 22:57:14 JST 2011
+eclipse.preferences.version=1
+encoding//src/api.py=utf-8
+encoding//src/archives.py=utf-8
+encoding//src/common.py=utf-8
+encoding//src/conf/locale/ja/LC_MESSAGES/django.po=UTF-8
+encoding//src/conf/settings.py=utf-8
+encoding//src/config.py=utf-8
+encoding//src/cookies.py=utf-8
+encoding//src/i18NRequestHandler.py=utf-8
+encoding//src/image_view.py=utf-8
+encoding//src/kesikesi_db.py=utf-8
+encoding//src/main.py=utf-8
+encoding//src/page.py=utf-8
+encoding//src/settings.py=utf-8
+encoding//src/task.py=utf-8
+encoding//src/templates/index.html=UTF-8
+encoding//src/templates/page/start.html=UTF-8
+encoding//src/templates/page/welcome.html=UTF-8
+encoding//src/templates/view/image.html=UTF-8
+encoding//src/templates/view/image_ios.html=UTF-8

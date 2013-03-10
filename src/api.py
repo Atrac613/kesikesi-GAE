@@ -48,14 +48,15 @@ class UploadAPI(webapp.RequestHandler):
         
         if tmp_image_key:
             logging.info('tmp_image_key: %s' % tmp_image_key)
-            tmp_image = memcache.get('tmp_%s' % tmp_image_key)
+            tmp_org_image = memcache.get('tmp_org_%s' % tmp_image_key)
+            tmp_msk_image = memcache.get('tmp_msk_%s' % tmp_image_key)
             
-            if tmp_image:
-                org_image = tmp_image['org_image']
-                msk_image = tmp_image['msk_image']
-                mask_mode = tmp_image['mask_mode']
-                mask_type = tmp_image['mask_type']
-                access_code = tmp_image['access_code']
+            if tmp_org_image and tmp_msk_image:
+                org_image = tmp_org_image['org_image']
+                msk_image = tmp_msk_image['msk_image']
+                mask_mode = tmp_msk_image['mask_mode']
+                mask_type = tmp_msk_image['mask_type']
+                access_code = tmp_msk_image['access_code']
             else:
                 return self.error(500)
             
@@ -153,7 +154,8 @@ class UploadImageAPI(webapp.RequestHandler):
         if org_image and msk_image:
             image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()
             
-            memcache.add('tmp_%s' % image_key, {'org_image': org_image, 'msk_image': msk_image, 'mask_mode': mask_mode, 'mask_type': mask_type, 'access_code': access_code}, 3600)
+            memcache.add('tmp_org_%s' % image_key, {'org_image': org_image}, 3600)
+            memcache.add('tmp_msk_%s' % image_key, {'msk_image': msk_image, 'mask_mode': mask_mode, 'mask_type': mask_type, 'access_code': access_code}, 3600)
             
             data = {'image_key': image_key}
         else:
