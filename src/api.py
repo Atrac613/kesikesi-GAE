@@ -154,7 +154,13 @@ class UploadImageAPI(webapp.RequestHandler):
         if org_image and msk_image:
             image_key = hashlib.md5('%s' % uuid.uuid4()).hexdigest()
             
-            memcache.add('tmp_org_%s' % image_key, {'org_image': org_image}, 3600)
+            org_image = images.Image(org_image)
+            org_image.resize(width=640)
+            #org_image.im_feeling_lucky()
+            new_org_image = org_image.execute_transforms(output_encoding=images.PNG)
+            new_org_image = convert_square(new_org_image, 640, 640)
+            
+            memcache.add('tmp_org_%s' % image_key, {'org_image': new_org_image}, 3600)
             memcache.add('tmp_msk_%s' % image_key, {'msk_image': msk_image, 'mask_mode': mask_mode, 'mask_type': mask_type, 'access_code': access_code}, 3600)
             
             data = {'image_key': image_key}
