@@ -1,6 +1,4 @@
-{% load i18n %}
-
-{% extends "base_generic.html" %}
+{% extends "page/base_generic.html" %}
 
 {% block title %}Welcome - KesiKesi{% endblock %}
 
@@ -10,33 +8,33 @@
 <script type="text/javascript">
 $(function() {
 	$("#login").click(function(){
-		{% ifequal version 'v2' %}
+		{% if version == 'v2' %}
 		window.location = "ksks://www.kesikesi.me/page/auth";
 		{% else %}
 		window.location = "/page/login";
-		{% endifequal %}
+		{% endif %}
 	});
 	
-	{% ifequal version 'v2' %}
+	{% if version == 'v2' %}
 		window.location = "ksks://www.kesikesi.me/buttonStatus?navigationButton=off&actionButton=off";
 	{% else %}
-		{% ifequal action 'logout' %}
+		{% if action == 'logout' %}
 			window.location = "ksks://www.kesikesi.me/page/logout/success";
-		{% endifequal %}
-	{% endifequal %}
+		{% endif %}
+	{% endif %}
 });
 </script>
 {% endblock %}
 
 {% block content %}
 <div id="title">
-	<span>{% trans "Welcome!" %}</span>
+	<span>{% trans %}Welcome!{% endtrans %}</span>
 </div>
 
-<p>{% trans "Get the same feeling of excitement with your iPhone as not knowing what will appear until you scratch off a scratch card!" %}</p>
-<p>{% trans "KesiKesi is a photo-sharing app that lets mask whatever area of your own photos that you want to create original scratch cards." %}</p>
+<p>{% trans %}Get the same feeling of excitement with your iPhone as not knowing what will appear until you scratch off a scratch card!{% endtrans %}</p>
+<p>{% trans %}KesiKesi is a photo-sharing app that lets mask whatever area of your own photos that you want to create original scratch cards.{% endtrans %}</p>
 
-<p>{% trans "KesiKesi can be used straight away from a Google account." %}</p>
+<p>{% trans %}KesiKesi can be used straight away from a Google account.{% endtrans %}</p>
 
 <div style="clear: both;padding-top: 10px;">
 	<div id="login" style="margin:0 auto;width:100px;border-radius: 5px;background-color: rgba(0,51,102,0.4);text-align: center;padding: 5px;color: #FFFFFF;margin-top:5px;margin-bottom:5px;">

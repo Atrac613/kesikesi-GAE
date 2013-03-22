@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import os
-import hashlib
 import logging
-import uuid
 import datetime
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
-from google.appengine.ext import db
-from google.appengine.api import images
-from google.appengine.api import memcache
-from google.appengine.api import users
+import webapp2
+
 from google.appengine.api import taskqueue
 
 from kesikesi_db import ArchiveList
 from kesikesi_db import UserList
 
-class DeleteAllPhotosTask(webapp.RequestHandler):
+from i18NRequestHandler import I18NRequestHandler
+
+class DeleteAllPhotosTask(I18NRequestHandler):
     def post(self):
         user_id = self.request.get('id')
         
@@ -38,13 +32,6 @@ class DeleteAllPhotosTask(webapp.RequestHandler):
         if len(archive_list) > 0:
             taskqueue.add(url='/task/delete_all_photos', params={'id': user_id})
             
-
-application = webapp.WSGIApplication(
-                                     [('/task/delete_all_photos', DeleteAllPhotosTask)],
-                                     debug=True)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+app = webapp2.WSGIApplication(
+                              [('/task/delete_all_photos', DeleteAllPhotosTask)],
+                              debug=False)

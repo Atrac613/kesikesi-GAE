@@ -1,18 +1,18 @@
-{% load i18n %}<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="description" content="{% trans "KesiKesi is a photo-sharing app that lets mask whatever area of your own photos that you want to create original scratch cards." %}">
+<meta name="description" content="{% trans %}KesiKesi is a photo-sharing app that lets mask whatever area of your own photos that you want to create original scratch cards.{% endtrans %}">
 
-<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
-<meta property="mixi:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120" />
+<meta property="og:image" content="http://kesikesi.atrac613.io/api/get_image?id={{ image_key }}&style=icon120"/>
+<meta property="mixi:image" content="http://kesikesi.atrac613.io/api/get_image?id={{ image_key }}&style=icon120" />
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
 {% if page_title %}
 <meta property="og:title" content="{{ page_title }}"/>
 {% else %}
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
 {% endif %}
-<meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
+<meta property="og:url" content="http://kesikesi.atrac613.io/p/{{ image_key }}"/>
 
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
 <link href="/css/view.css?20120225" rel="stylesheet" type="text/css" />
@@ -28,7 +28,7 @@
 $(function() {
 	if (navigator.userAgent.indexOf('iPad') > 0) {
 		$("#launchApp").click(function(){
-			document.location = "ksks://www.kesikesi.me/{{ image_key }}";
+			document.location = "ksks://kesikesi.atrac613.io/{{ image_key }}";
 			{% if safari %}
 		    var time = (new Date()).getTime();
 		    setTimeout(function(){
@@ -88,14 +88,14 @@ $(function() {
 			
 		</div>
 		<div style="margin-left: 380px;width: 430px;">
-			<div id="title">{% trans "Let's use the app to do the scratching!" %}</div>
-			<div id="title_message">{% trans "You can scratch to reveal the hidden parts." %}</div>
+			<div id="title">{% trans %}Let's use the app to do the scratching!{% endtrans %}</div>
+			<div id="title_message">{% trans %}You can scratch to reveal the hidden parts.{% endtrans %}</div>
 			
 			<div id="qr_code">
-				<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
+				<p><img src="http://chart.apis.google.com/chart?chs=200x200&cht=qr&chl=http://kesikesi.atrac613.io/{{ image_key }}" /></p>
 			</div>
 			<div id="read_count"><p>{{ read_count }} KesiKesi</p></div>
-			<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&hl=en&entry_0=http://www.kesikesi.me/{{ image_key }}">{% trans "Report a Problem." %}</a></p></div>
+			<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&hl=en&entry_0=http://kesikesi.atrac613.io/{{ image_key }}">{% trans %}Report a Problem.{% endtrans %}</a></p></div>
 			
 			<div id="launchApp">
 				<span>Scrach!</span>
@@ -103,10 +103,10 @@ $(function() {
 			
 			<div id="shareButton">
 				<div style="position:absolute;left:0;width:100px;height:30px;">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me" data-text="#KesiKesi | Turn your photos into a little secret.">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://kesikesi.atrac613.io/p/{{ image_key }}" data-via="kesikesi_me" data-text="#KesiKesi | Turn your photos into a little secret.">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 				</div>
 				<div style="position:absolute;left:110px;width:60px;height:30px;">
-					<a href="http://mixi.jp/share.pl" class="mixi-check-button" data-key="068c579efd82383ef2a1c7172795eca407b76a88" data-url="http://www.kesikesi.me/{{ image_key }}">mixiチェック</a>
+					<a href="http://mixi.jp/share.pl" class="mixi-check-button" data-key="068c579efd82383ef2a1c7172795eca407b76a88" data-url="http://kesikesi.atrac613.io/p/{{ image_key }}">mixiチェック</a>
 	    			<script type="text/javascript" src="http://static.mixi.jp/js/share.js"></script>
 	    		</div>
     			
@@ -157,7 +157,7 @@ $(function() {
 		</div>
 	</div>
 	
-	<div id="footer"><p>&copy; 2012 KesiKesi.</p></div>
+	<div id="footer"><p>&copy; 2013 atrac613.io</p></div>
 </div>
 
 </body>

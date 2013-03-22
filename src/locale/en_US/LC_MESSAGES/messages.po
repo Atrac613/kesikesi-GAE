@@ -1,0 +1,30 @@
+# English (United States) translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-03-20 23:46+0900\n"
+"PO-Revision-Date: 2013-03-20 23:47+0900\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: en_US <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: templates/index.html:82
+msgid ""
+"KesiKesi is a photo-sharing app that lets mask whatever area of your own "
+"photos that you want to create original scratch cards."
+msgstr ""
+
+#: templates/index.html:98
+msgid "KesiKesi is open source projects."
+msgstr ""
+

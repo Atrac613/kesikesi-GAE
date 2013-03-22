@@ -1,8 +1,13 @@
 application: kesikesi-hr
-version: 6
-runtime: python
+version: 7
+runtime: python27
 api_version: 1
+threadsafe: true
 
+libraries:
+- name: jinja2
+  version: "2.6"
+  
 handlers:
 - url: /css
   static_dir: web/css
@@ -14,63 +19,64 @@ handlers:
   static_dir: web/js
 
 - url: /api/api_test
-  script: api.py
+  script: api.app
   login: admin
 
 - url: /api/.*
-  script: api.py
+  script: api.app
 
 - url: /page/v2/auth
   login: required
   secure: always
-  script: page.py
+  script: page.app
   
 - url: /page/start
   login: required
   secure: always
-  script: page.py
+  script: page.app
 
 - url: /page/login
   login: required
   secure: always
-  script: page.py
+  script: page.app
 
 - url: /page/v2/archives
   secure: always
-  script: archives.py
+  script: archives.app
 
 # deprecated
 - url: /page/archives
   secure: always
-  script: archives.py
+  script: archives.app
 
 - url: /page/api/archives_load_more
   secure: always
   login: required
-  script: archives.py
+  script: archives.app
   
 - url: /page/settings
   secure: always
-  script: settings.py
+  script: settings.app
   
 - url: /page/settings/delete_all_photos
   secure: always
   login: required
-  script: settings.py
+  script: settings.app
   
 - url: /page/.*
   secure: always
-  script: page.py
+  script: page.app
   
 - url: /task/.*
   secure: always
   login: admin
-  script: task.py
+  script: task.app
+
+- url: /p/.*
+  script: image_view.app
 
 - url: /
-  script: main.py
+  script: main.app
   
 - url: /.*
-  script: image_view.py
-
-  
+  script: image_view.app

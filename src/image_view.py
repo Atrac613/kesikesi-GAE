@@ -1,29 +1,20 @@
 # -*- coding: utf-8 -*-
 
-import os
 import hashlib
 import logging
 import datetime
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
+import webapp2
+import json
+
 from google.appengine.api import memcache
 from google.appengine.api import users
 
-from django.utils import simplejson
-
 from kesikesi_db import ArchiveList
 from kesikesi_db import MaskImage
-from kesikesi_db import UserList
 
 from config import SECRET_MASK_KEY
 from config import SECRET_IMAGE_KEY
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
-from django.conf import settings
-# Force Django to reload settings
-settings._target = None
 
 from i18NRequestHandler import I18NRequestHandler
 
@@ -133,14 +124,14 @@ class MainPage(I18NRequestHandler):
             template_values['webkit'] = webkit
                 
             if 'iPad' in user_agent:
-                path = os.path.join(os.path.dirname(__file__), 'templates/view/image.html')
+                path = 'view/image.html'
             else:
-                path = os.path.join(os.path.dirname(__file__), 'templates/view/image_ios.html')
+                path = 'view/image_ios.html'
         else:
-            path = os.path.join(os.path.dirname(__file__), 'templates/view/image.html')
+            path = 'view/image.html'
         
-        self.response.out.write(template.render(path, template_values))
-
+        self.render_template(path, template_values)
+        
     def post(self, image_key):
         if image_key == '' or len(image_key) != 6:
             return self.error(404)
@@ -176,16 +167,11 @@ class MainPage(I18NRequestHandler):
                         
                     data = {'status': True}
                     
-                    json = simplejson.dumps(data, ensure_ascii=False)
+                    json_data = json.dumps(data, ensure_ascii=False)
                     self.response.content_type = 'application/json'
-                    self.response.out.write(json)
+                    self.response.out.write(json_data)
 
-application = webapp.WSGIApplication(
-                                     [('/(.*)', MainPage)],
-                                     debug=False)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+app = webapp2.WSGIApplication(
+                              [('/p/(.*)', MainPage),
+                               ('/(.*)', MainPage)],
+                              debug=False)

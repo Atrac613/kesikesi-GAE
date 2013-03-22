@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
+import webapp2
+
 from google.appengine.api import users
 from google.appengine.api import taskqueue
 
-from django.utils import simplejson 
-
 from kesikesi_db import UserList
 
-class SettingsPage(webapp.RequestHandler):
+from i18NRequestHandler import I18NRequestHandler
+
+class SettingsPage(I18NRequestHandler):
     def get(self):
         user_id = self.request.get('id')
         
@@ -25,10 +23,9 @@ class SettingsPage(webapp.RequestHandler):
             'account': account
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/settings/index.html')
-        self.response.out.write(template.render(path, template_values))
-
-class DeleteAllPhotosPage(webapp.RequestHandler):
+        self.render_template('page/settings/index.html', template_values)
+        
+class DeleteAllPhotosPage(I18NRequestHandler):
     def get(self):
         
         user = users.get_current_user()
@@ -45,9 +42,8 @@ class DeleteAllPhotosPage(webapp.RequestHandler):
             'account': account
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/settings/delete_all_photos.html')
-        self.response.out.write(template.render(path, template_values))
-
+        self.render_template('page/settings/delete_all_photos.html', template_values)
+        
     def post(self):
         user = users.get_current_user()
         
@@ -70,13 +66,7 @@ class DeleteAllPhotosPage(webapp.RequestHandler):
                     
         self.redirect('/page/settings/delete_all_photos?status=%d' % status)
 
-application = webapp.WSGIApplication(
-                                     [('/page/settings', SettingsPage),
-                                      ('/page/settings/delete_all_photos', DeleteAllPhotosPage)],
-                                     debug=False)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+app = webapp2.WSGIApplication(
+                              [('/page/settings', SettingsPage),
+                               ('/page/settings/delete_all_photos', DeleteAllPhotosPage)],
+                              debug=False)

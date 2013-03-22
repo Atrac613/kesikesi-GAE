@@ -1,4 +1,4 @@
-{% load i18n %}<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -6,9 +6,9 @@
 <meta name="viewport" content="width=320px, initial-scale=1.0">
 <meta name="description" content="KesiKesi is a photo sharing application that allows you to hide certain areas that you would like to keep secret, and to reveal the hidden areas as well.">
 
-<meta property="og:image" content="http://www.kesikesi.me/api/get_image?id={{ image_key }}&style=icon120"/>
+<meta property="og:image" content="http://kesikesi.atrac613.io/api/get_image?id={{ image_key }}&style=icon120"/>
 <meta property="og:title" content="KesiKesi | Turn your photos into a little secret."/>
-<meta property="og:url" content="http://www.kesikesi.me/{{ image_key }}"/>
+<meta property="og:url" content="http://kesikesi.atrac613.io/p/{{ image_key }}"/>
 
 <link href="/css/reset.css" rel="stylesheet" type="text/css" />
 <link href="/css/view_ios.css?2012010203" rel="stylesheet" type="text/css" />
@@ -34,7 +34,7 @@ $(function() {
     
 	if (navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('iPhone') > 0 || navigator.userAgent.indexOf('iPad') > 0) {
 		$("#launchApp").click(function(){
-			document.location = "ksks://www.kesikesi.me/{{ image_key }}";
+			document.location = "ksks://kesikesi.atrac613.io/{{ image_key }}";
 			{% if safari %}
 		    var time = (new Date()).getTime();
 		    setTimeout(function(){
@@ -53,7 +53,7 @@ $(function() {
 	}
 	
 	{% if actionButton %}
-	window.location = "ksks://www.kesikesi.me/buttonStatus?actionButton=on";
+	window.location = "ksks://kesikesi.atrac613.io/buttonStatus?actionButton=on";
 	{% endif %}
 	
 	var maskCanvas = document.getElementById('maskCanvas');
@@ -72,25 +72,17 @@ $(function() {
 	    
 	    var maskTypeImage = new Image();
 	    
-	    {% ifequal mask_type 'black' %}
+	    {% if mask_type == 'black' %}
 			maskTypeImage.src="/images/btn0.png";
-		{% endifequal %}
-		
-		{% ifequal mask_type 'mosaic' %}
+		{% elif mask_type == 'mosaic' %}
 			maskTypeImage.src="/images/btn1.png";
-		{% endifequal %}
-		
-		{% ifequal mask_type 'caution' %}
+		{% elif mask_type == 'caution' %}
 			maskTypeImage.src="/images/btn2.png";
-		{% endifequal %}
-		
-		{% ifequal mask_type 'zebra' %}
+		{% elif mask_type == 'zebra' %}
 			maskTypeImage.src="/images/btn3.png";
-		{% endifequal %}
-		
-		{% ifequal mask_type 'note' %}
+		{% elif mask_type == 'note' %}
 			maskTypeImage.src="/images/btn4.png";
-		{% endifequal %}
+		{% endif %}
 		
 		maskTypeImage.onload = function() {
 			$("#maskType img").attr('src', maskTypeImage.src);
@@ -216,7 +208,7 @@ window.addEventListener('load',function(){
 			<div id="comment">{{ comment }}</div>
 			<div style="width:280px;height:40px;">
 				<div style="float: left;margin:5px;left:30px;width:100px;height:30px;">
-					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://www.kesikesi.me/{{ image_key }}" data-via="kesikesi_me" data-text="#KesiKesi | Turn your photos into a little secret.">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-url="http://kesikesi.atrac613.io/p/{{ image_key }}" data-via="kesikesi_me" data-text="#KesiKesi | Turn your photos into a little secret.">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 				</div>
 				<div style="margin-left:110px;padding-top:3px;width:100px;height:30px;">
 					<div id="fb-root"></div>
@@ -240,24 +232,24 @@ window.addEventListener('load',function(){
 					<img src="" width="70" height="70" />
 				</div>
 				<div style="margin-left: 70px;line-height:70px;font-size: 20px;font-family: 'Allerta Stencil', sans-serif;">
-					{% trans "Scratch Here!" %}
+					{% trans %}Scratch Here!{% endtrans %}
 				</div>
 			</div>
 		</div>
 		
-		<div id="sub_title">{% trans "Let's use the app to do the scratching!" %}</div>
-		<div id="title_message">{% trans "You can scratch to reveal the hidden parts." %}</div>
+		<div id="sub_title">{% trans %}Let's use the app to do the scratching!{% endtrans %}</div>
+		<div id="title_message">{% trans %}You can scratch to reveal the hidden parts.{% endtrans %}</div>
 		
 		<div id="launchApp">
 			<span>Scratch!</span>
 		</div>
 		
 		<div id="qr_code">
-			<p><img src="http://chart.apis.google.com/chart?chs=170x170&cht=qr&chl=http://www.kesikesi.me/{{ image_key }}" /></p>
-			<p id="permalink"><a href="http://www.kesikesi.me/{{ image_key }}">Permalink</a></p>
+			<p><img src="http://chart.apis.google.com/chart?chs=170x170&cht=qr&chl=http://kesikesi.atrac613.io/p/{{ image_key }}" /></p>
+			<p id="permalink"><a href="http://kesikesi.atrac613.io/p/{{ image_key }}">Permalink</a></p>
 		</div>
 		<div id="read_count"><p>{{ read_count }} KesiKesi</p></div>
-		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&hl=en&entry_0=http://www.kesikesi.me/{{ image_key }}">Report a Problem.</a></p></div>
+		<div id="report"><p><a href="https://spreadsheets.google.com/spreadsheet/viewform?formkey=dHFpZmJjNjNMZUdEVmp0ZHdNNHZuSEE6MQ&hl=en&entry_0=http://kesikesi.atrac613.io/p/{{ image_key }}">Report a Problem.</a></p></div>
 {% if is_owner %}
 		<div id="deleteButton">
 			<span>DELETE</span>
@@ -267,7 +259,7 @@ window.addEventListener('load',function(){
 		<div id="title">Turn your photos into a little secret.</div>
 	</div>
 	
-	<div id="footer"><p>&copy; 2012 KesiKesi.</p></div>
+	<div id="footer"><p>&copy; 2013 atrac613.io</p></div>
 </div>
 <script type="text/javascript"><!--
   // XHTML should not attempt to parse these strings, declare them CDATA.

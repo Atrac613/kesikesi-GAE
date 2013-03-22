@@ -1,20 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import os
-import logging
+import webapp2
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
 from google.appengine.api import users
-
-#from google.appengine.dist import use_library
-#use_library('django', '1.1')
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
-from django.conf import settings
-# Force Django to reload settings
-settings._target = None
 
 from i18NRequestHandler import I18NRequestHandler
 
@@ -38,10 +26,9 @@ class WelcomePage(I18NRequestHandler):
             'version': version
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/welcome.html')
-        self.response.out.write(template.render(path, template_values))
-
-class LoginPage(webapp.RequestHandler):
+        self.render_template('page/welcome.html', template_values)
+        
+class LoginPage(I18NRequestHandler):
     def get(self, version='v1'):
         
         device_id = self.request.get('id')
@@ -66,9 +53,7 @@ class LoginPage(webapp.RequestHandler):
                     'logout_url': logout_url
                 }
                 
-                path = os.path.join(os.path.dirname(__file__), 'templates/page/account_locked.html')
-
-                return self.response.out.write(template.render(path, template_values))
+                return self.render_template('page/account_locked.html', template_values)
                 
         if version == 'v2':
             self.redirect('/page/v2/auth?success=True')
@@ -96,10 +81,9 @@ class StartPage(I18NRequestHandler):
             'version': version
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/start.html')
-        self.response.out.write(template.render(path, template_values))
+        self.render_template('page/start.html', template_values)
 
-class AuthPage(webapp.RequestHandler):
+class AuthPage(I18NRequestHandler):
     def get(self, version='v2'):
         
         if version not in ('v2'):
@@ -110,33 +94,25 @@ class AuthPage(webapp.RequestHandler):
             template_values = {
             }
             
-            path = os.path.join(os.path.dirname(__file__), 'templates/page/auth_success.html')
-            self.response.out.write(template.render(path, template_values))
+            self.render_template('page/auth_success.html', template_values)
         else:
             self.redirect('/page/v2/login')
 
-class SchemeTestPage(webapp.RequestHandler):
+class SchemeTestPage(I18NRequestHandler):
     def get(self):
 
         template_values = {
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/scheme_test.html')
-        self.response.out.write(template.render(path, template_values))
-
-application = webapp.WSGIApplication(
-                                     [('/page/welcome', WelcomePage), # deprecated
-                                      ('/page/(.*)/welcome', WelcomePage),
-                                      ('/page/login', LoginPage), # deprecated
-                                      ('/page/(.*)/login', LoginPage),
-                                      ('/page/start', StartPage), # deprecated
-                                      ('/page/(.*)/start', StartPage),
-                                      ('/page/(.*)/auth', AuthPage),
-                                      ('/page/test', SchemeTestPage)],
-                                     debug=False)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+        self.render_template('page/scheme_test.html', template_values)
+        
+app = webapp2.WSGIApplication(
+                              [('/page/welcome', WelcomePage), # deprecated
+                               ('/page/(.*)/welcome', WelcomePage),
+                               ('/page/login', LoginPage), # deprecated
+                               ('/page/(.*)/login', LoginPage),
+                               ('/page/start', StartPage), # deprecated
+                               ('/page/(.*)/start', StartPage),
+                               ('/page/(.*)/auth', AuthPage),
+                               ('/page/test', SchemeTestPage)],
+                              debug=False)

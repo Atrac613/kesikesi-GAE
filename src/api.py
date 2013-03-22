@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os
 import hashlib
 import logging
 import uuid
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
+import webapp2
+import json
+
 from google.appengine.ext import db
 from google.appengine.api import images
 from google.appengine.api import memcache
 from google.appengine.api import users
 
-from django.utils import simplejson 
 
 from kesikesi_db import ArchiveList
 from kesikesi_db import OriginalImage
@@ -26,16 +24,17 @@ from config import SECRET_MASK_KEY
 from common import convert_square
 from common import gen_imagekey
 
-class APITestPage(webapp.RequestHandler):
+from i18NRequestHandler import I18NRequestHandler
+
+class APITestPage(I18NRequestHandler):
     def get(self):
 
         template_values = {
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/api_test.html')
-        self.response.out.write(template.render(path, template_values))
-
-class UploadAPI(webapp.RequestHandler):
+        self.render_template('api_test.html', template_values)
+        
+class UploadAPI(I18NRequestHandler):
     def post(self, version='v1'):
         user = users.get_current_user()
         
@@ -124,11 +123,11 @@ class UploadAPI(webapp.RequestHandler):
         else:
             data = {'image_key': False}
             
-        json = simplejson.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
-        self.response.out.write(json)
+        self.response.out.write(json_data)
         
-class UploadImageAPI(webapp.RequestHandler):
+class UploadImageAPI(I18NRequestHandler):
     def post(self, version='v2'):
         user = users.get_current_user()
         
@@ -167,11 +166,11 @@ class UploadImageAPI(webapp.RequestHandler):
         else:
             data = {'image_key': False}
             
-        json = simplejson.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
-        self.response.out.write(json)
+        self.response.out.write(json_data)
         
-class GetOriginalImageAPI(webapp.RequestHandler):
+class GetOriginalImageAPI(I18NRequestHandler):
     def get(self, version='v1'):
       
         image_id = self.request.get('id')
@@ -228,7 +227,7 @@ class GetOriginalImageAPI(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'image/jpeg'
         self.response.out.write(thumbnail)
 
-class GetMaskImageAPI(webapp.RequestHandler):
+class GetMaskImageAPI(I18NRequestHandler):
     def get(self, version='v1'):
       
         image_id = self.request.get('id')
@@ -293,7 +292,7 @@ class GetMaskImageAPI(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'image/png'
         self.response.out.write(thumbnail)
 
-class GetMaskModeAPI(webapp.RequestHandler):
+class GetMaskModeAPI(I18NRequestHandler):
     def get(self):
       
         image_id = self.request.get('id')
@@ -324,11 +323,11 @@ class GetMaskModeAPI(webapp.RequestHandler):
         
         data = {'mask_mode': mask_mode, 'access_code': mask_image.access_code, 'comment': comment}
         
-        json = simplejson.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
-        self.response.out.write(json)
+        self.response.out.write(json_data)
 
-class GetImageAPI(webapp.RequestHandler):
+class GetImageAPI(I18NRequestHandler):
     def get(self):
       
         image_key = self.request.get('id')
@@ -417,7 +416,7 @@ class GetImageAPI(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'image/jpeg'
         self.response.out.write(thumbnail)
     
-class GetArchiveListAPI(webapp.RequestHandler):
+class GetArchiveListAPI(I18NRequestHandler):
     def get(self):
         
         user_id = self.request.get('id')
@@ -432,11 +431,11 @@ class GetArchiveListAPI(webapp.RequestHandler):
         for image in archive_list:
             data.append({'image_key': image.image_key, 'created_at': image.created_at.strftime('%Y-%m-%dT%H:%M:%S+0000')})
         
-        json = simplejson.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
-        self.response.out.write(json)
+        self.response.out.write(json_data)
         
-class DeleteImageAPI(webapp.RequestHandler):
+class DeleteImageAPI(I18NRequestHandler):
     def get(self):
         image_key = self.request.get('id')
         user_id = self.request.get('user_id')
@@ -472,25 +471,19 @@ class DeleteImageAPI(webapp.RequestHandler):
         
         data = {'state': True}
             
-        json = simplejson.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
-        self.response.out.write(json)
+        self.response.out.write(json_data)
 
-application = webapp.WSGIApplication(
-                                     [('/api/upload', UploadAPI), # deprecated
-                                      ('/api/(.*)/upload', UploadAPI),
-                                      ('/api/(.*)/upload_image', UploadImageAPI),
-                                      ('/api/get_original_image', GetOriginalImageAPI), # deprecated
-                                      ('/api/(.*)/get_original_image', GetOriginalImageAPI),
-                                      ('/api/get_mask_image', GetMaskImageAPI), # deprecated
-                                      ('/api/(.*)/get_mask_image', GetMaskImageAPI),
-                                      ('/api/get_mask_mode', GetMaskModeAPI),
-                                      ('/api/get_image', GetImageAPI),
-                                      ('/api/api_test', APITestPage)],
-                                     debug=True)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+app = webapp2.WSGIApplication(
+                              [('/api/upload', UploadAPI), # deprecated
+                               ('/api/(.*)/upload', UploadAPI),
+                               ('/api/(.*)/upload_image', UploadImageAPI),
+                               ('/api/get_original_image', GetOriginalImageAPI), # deprecated
+                               ('/api/(.*)/get_original_image', GetOriginalImageAPI),
+                               ('/api/get_mask_image', GetMaskImageAPI), # deprecated
+                               ('/api/(.*)/get_mask_image', GetMaskImageAPI),
+                               ('/api/get_mask_mode', GetMaskModeAPI),
+                               ('/api/get_image', GetImageAPI),
+                               ('/api/api_test', APITestPage)],
+                              debug=False)

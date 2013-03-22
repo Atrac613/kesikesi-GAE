@@ -2,26 +2,42 @@
 
 import os
 
-from django.utils import translation
-from google.appengine.ext import webapp
-from cookies import Cookies
+import jinja2
+import webapp2
+import logging
 
-class I18NRequestHandler(webapp.RequestHandler):
+from webapp2_extras import i18n
 
-    def initialize(self, request, response):
-        webapp.RequestHandler.initialize(self, request, response)
- 
-        self.request.COOKIES = Cookies(self)
-        self.request.META = os.environ
-        self.reset_language()
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
+jinja_environment = \
+    jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR), extensions=['jinja2.ext.i18n'])
 
-    def reset_language(self):
+jinja_environment.install_gettext_translations(i18n) 
 
-        # Decide the language from Cookies/Headers
-        language = translation.get_language_from_request(self.request)
-        translation.activate(language)
-        self.request.LANGUAGE_CODE = translation.get_language()
+AVAILABLE_LOCALES = ['en_US', 'ja']
 
-        # Set headers in response
-        self.response.headers['Content-Language'] = translation.get_language()
-#        translation.deactivate()
+class I18NRequestHandler(webapp2.RequestHandler):
+    def __init__(self, request, response):
+        self.initialize(request, response)
+        
+        locale = request.cookies.get('locale')
+        if locale in AVAILABLE_LOCALES:
+            i18n.get_i18n().set_locale(locale)
+        else:
+            header = request.headers.get('Accept-Language', '')
+            locales = [locale.split(';')[0] for locale in header.split(',')]
+            for locale in locales:
+                logging.info('%s' % locale)
+                if locale in AVAILABLE_LOCALES:
+                    i18n.get_i18n().set_locale(locale)
+                    break
+            else:
+                i18n.get_i18n().set_locale(AVAILABLE_LOCALES[0])
+                
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_values, **template_args):
+        template = jinja_environment.get_template(filename)
+        self.response.out.write(template.render(template_values))

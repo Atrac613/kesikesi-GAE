@@ -1,26 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 import datetime
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
-from google.appengine.ext import db
-from google.appengine.api import users
+import webapp2
+import json
 
-from django.utils import simplejson 
+from google.appengine.api import users
 
 from kesikesi_db import ArchiveList
 from kesikesi_db import UserList
 
 from config import IMAGE_FETCH_COUNT
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
-from django.conf import settings
-# Force Django to reload settings
-settings._target = None
 
 from i18NRequestHandler import I18NRequestHandler
 
@@ -91,10 +82,9 @@ class ArchivesPage(I18NRequestHandler):
             'actionButton': actionButton
         }
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/page/archives.html')
-        self.response.out.write(template.render(path, template_values))
-
-class ArchivesLoadMoreAPI(webapp.RequestHandler):
+        self.render_template('page/archives.html', template_values)
+        
+class ArchivesLoadMoreAPI(I18NRequestHandler):
     def post(self):
         user = users.get_current_user()
         
@@ -128,18 +118,12 @@ class ArchivesLoadMoreAPI(webapp.RequestHandler):
             
         data = {'data': data, 'date': date}
         
-        json = simplejson.dumps(data, ensure_ascii=False)
+        json_data = json.dumps(data, ensure_ascii=False)
         self.response.content_type = 'application/json'
-        self.response.out.write(json)
+        self.response.out.write(json_data)
 
-application = webapp.WSGIApplication(
-                                     [('/page/archives', ArchivesPage), # deprecated
-                                      ('/page/(.*)/archives', ArchivesPage),
-                                      ('/page/api/archives_load_more', ArchivesLoadMoreAPI)],
-                                     debug=False)
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+app = webapp2.WSGIApplication(
+                              [('/page/archives', ArchivesPage), # deprecated
+                               ('/page/(.*)/archives', ArchivesPage),
+                               ('/page/api/archives_load_more', ArchivesLoadMoreAPI)],
+                              debug=True)

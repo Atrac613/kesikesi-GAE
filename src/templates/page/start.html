@@ -1,6 +1,4 @@
-{% load i18n %}
-
-{% extends "base_generic.html" %}
+{% extends "page/base_generic.html" %}
 
 {% block title %}My First KesiKesi - KesiKesi{% endblock %}
 
@@ -9,20 +7,19 @@
 {% block javascript %}
 <script type="text/javascript">
 $(function() {
-	{% ifequal version 'v2' %}
+	{% if version == 'v2' %}
 		window.location = "ksks://www.kesikesi.me/buttonStatus?navigationButton=on&actionButton=off";
 	{% else %}
-		{% ifequal action 'login' %}
+		{% if action == 'login' %}
 			window.location = "ksks://www.kesikesi.me/page/login/success";
-		{% endifequal %}
-	{% endifequal %}
+		{% endif %}
+	{% endif %}
 	
 	$("#howToUseIt").click(function(){
 		window.location = "http://www.youtube.com/watch?v=peYrFmF_KgE";
 	});
 });
 </script>
-
 {% endblock %}
 
 {% block content %}
@@ -30,7 +27,7 @@ $(function() {
 <center><p style="font-size: 1.3em;">Start Here!</p></center>
 
 <div id="howToUseIt">
-	<span>{% trans "How to use it.(YouTube)" %}</span>
+	<span>{% trans %}How to use it.(YouTube){% endtrans %}</span>
 </div>
 
 <hr />

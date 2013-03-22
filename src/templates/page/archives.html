@@ -1,6 +1,4 @@
-{% load i18n %}
-
-{% extends "base_generic.html" %}
+{% extends "page/base_generic.html" %}
 
 {% block title %}My Archives - KesiKesi{% endblock %}
 
@@ -43,13 +41,13 @@
 		$("#loadMore").hide();
 {% endif %}
 
-{% ifequal version 'v2' %}
+{% if version == 'v2' %}
 	window.location = "ksks://www.kesikesi.me/buttonStatus?navigationButton=on&actionButton=off";
 {% else %}
-	{% ifequal action 'login' %}
+	{% if action == 'login' %}
 		window.location = "ksks://www.kesikesi.me/page/login/success";
-	{% endifequal %}
-{% endifequal %}
+	{% endif %}
+{% endif %}
 		
 	});
 </script>
@@ -63,7 +61,7 @@
 <div id="archiveList" style="margin-left: 3px;">
 {% for archive in archive_list %}
 <div style="background-color: #CCCCCC;width: 48px; height:48px;float: left;margin: 6px;border-radius: 5px;">
-	<a href="/{{ archive.image_key }}?actionButton={{ actionButton }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" style="border-radius: 5px;" /></a>
+	<a href="/p/{{ archive.image_key }}?actionButton={{ actionButton }}"><img src="/api/get_image?id={{ archive.image_key }}&style=icon48" style="border-radius: 5px;" /></a>
 </div>
 {% endfor %}
 </div>
@@ -71,7 +69,7 @@
 {% if how_to_use_it %}
 <div style="clear: both;padding-top: 10px;">
 	<div id="howToUseIt">
-		<span>{% trans "How to use it.(YouTube)" %}</span>
+		<span>{% trans %}How to use it.(YouTube){% endtrans %}</span>
 	</div>
 </div>
 {% endif %}
