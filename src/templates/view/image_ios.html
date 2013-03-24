@@ -34,7 +34,7 @@ $(function() {
     
 	if (navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('iPhone') > 0 || navigator.userAgent.indexOf('iPad') > 0) {
 		$("#launchApp").click(function(){
-			document.location = "ksks://kesikesi.atrac613.io/{{ image_key }}";
+			document.location = "ksks://kesikesi.atrac613.io/p/{{ image_key }}";
 			{% if safari %}
 		    var time = (new Date()).getTime();
 		    setTimeout(function(){
@@ -195,7 +195,6 @@ window.addEventListener('load',function(){
 
 </head>
 <body>
-
 <div id="wrapper">
 	<div id="header"><h1><a href="/">KesiKesi</a></h1></div>
 	<div id="download"><span><a href="http://itunes.apple.com/app/id471597529?mt=8">Download the Free iPhone App.</a></span></div>

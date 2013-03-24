@@ -27,7 +27,13 @@ class I18NRequestHandler(webapp2.RequestHandler):
             header = request.headers.get('Accept-Language', '')
             locales = [locale.split(';')[0] for locale in header.split(',')]
             for locale in locales:
-                logging.info('%s' % locale)
+                logging.info('Accept-Language: %s' % locale)
+                
+                # Workaround
+                # for Mobile Safari
+                if locale == 'ja-jp':
+                    locale = 'ja'
+                    
                 if locale in AVAILABLE_LOCALES:
                     i18n.get_i18n().set_locale(locale)
                     break

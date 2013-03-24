@@ -28,7 +28,7 @@
 $(function() {
 	if (navigator.userAgent.indexOf('iPad') > 0) {
 		$("#launchApp").click(function(){
-			document.location = "ksks://kesikesi.atrac613.io/{{ image_key }}";
+			document.location = "ksks://kesikesi.atrac613.io/p/{{ image_key }}";
 			{% if safari %}
 		    var time = (new Date()).getTime();
 		    setTimeout(function(){
